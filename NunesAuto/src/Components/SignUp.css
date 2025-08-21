@@ -1,0 +1,185 @@
+
+.signUp {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    background-image: url('../../../public/SignUpBackground.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: 1; /* Ensure this is above the pseudo-element overlay */
+}
+
+
+.signUp::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: -1; /* Place it behind the content */
+}
+
+
+.formContainer {
+    width: 100%;
+    max-width: 450px;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Optional: adds a nice glassmorphism effect */
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Stronger shadow for depth */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+
+.heading {
+    font-size: 2.5rem;
+    font-family: 'Georgia', serif; /* Or any other serif font */
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+.form-divider {
+    width: 100%;
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 20px 0;
+}
+
+/*
+  Styles for the form element.
+*/
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.form-label {
+    font-weight: 600;
+    color: #fff;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/*
+  Styles for all input fields.
+*/
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding doesn't affect total width */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Styles for input field focus */
+.form-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #ff4500;
+}
+
+/*
+  Styles for the gender radio button section.
+*/
+.gender-options {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.gender-label {
+    font-weight: 400; /* Lighter weight for these labels */
+    margin: 0;
+}
+
+/*
+  Styles for the main "Sign Up" button.
+*/
+.button {
+    background-color: #ff4500; /* A vibrant orange-red color */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+    margin-top: 20px;
+}
+
+.button:hover {
+    background-color: #e63e00;
+    transform: translateY(-2px);
+}
+
+
+.login-text {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.login-link {
+    color: #007bff; 
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+    color: #4da6ff;
+}
+
+/*
+  Styles for the "Browse products" button outside the form.
+*/
+.browse-btn {
+    text-decoration: none; /* Remove underline from Link component */
+}
+
+.browse-btn button {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.browse-btn button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+

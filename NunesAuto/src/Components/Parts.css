@@ -1,0 +1,50 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.parts{
+    height: 125vh;
+    background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
+}
+
+.allProds{
+    border: 5px solid black;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    gap: 2vw;
+}
+
+.products{
+    margin-left: 6vw;
+    border: 2px solid blue;
+    border-radius: 15px;
+    width: 23vw;
+    height: 55vh;
+    display: flex;
+    /* padding: 2vh 2vw; */
+}
+
+.prodImage{
+    margin-top: 5vh;
+    height: fit-content;
+    width: 23vw;
+}
+
+.prodName{
+    color: white;
+}
+
+.brandsBtn{
+    height: 5vh;
+    width: 8vw;
+}
+
+.brandsBtn a{
+    text-decoration: none;
+    color: black;
+}

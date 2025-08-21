@@ -1,0 +1,39 @@
+.cart{
+    background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
+}
+
+.cart-container{
+    height: 100vh;
+    border: 2px solid black;
+    margin-top: 5vh;
+}
+
+.product{
+    margin-top: 6vh;
+    border: 2px solid white;
+    height: 25vh;
+    width: 154vh;
+    margin-left: 10vw;
+    border-radius: 15px;
+    background-color: black;
+}
+
+table{
+    border: 2px solid black;
+    height: 20vh;
+    border-radius: 15px;
+}
+
+td{
+    border-collapse: collapse;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+th{
+    color: #ffff;
+}
+
+td{
+    color: rgb(48, 47, 47);
+}

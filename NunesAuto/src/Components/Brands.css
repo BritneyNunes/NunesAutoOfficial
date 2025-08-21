@@ -1,0 +1,54 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.brands{
+   height: 100vh;
+   /* background-color: greenyellow; */
+   background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
+}
+
+.brandsHeading{
+    font-size: 50px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+}
+
+.partsBtn{
+    height: 5vh;
+    width: 8vw;
+}
+
+.partsBtn a{
+    text-decoration: none;
+    color: black;
+}
+
+.allImages{
+    margin-top: 5vh;
+    border: 5px solid black;
+    height: 55vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    gap: 2vw;
+}
+
+.images{
+    /* margin-left: 3vw; */
+    border: 2px solid blue;
+    display: flex;
+    /* padding: 2vh 2vw; */
+}
+button{
+    background-color: transparent;
+    border: none;
+}
+.image{
+    width: 28vw;
+    height: 50vh;
+
+}

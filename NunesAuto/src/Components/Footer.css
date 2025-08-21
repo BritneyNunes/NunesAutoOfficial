@@ -1,0 +1,67 @@
+
+.footer-container {
+  height: 40vh;
+  background-color: #103666; /* Dark blue to match your nav bar */
+  color: #f0f0f0; /* Light gray text for contrast */
+  padding: 40px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  border-top: 1px solid black; 
+}
+
+.footer-section {
+  flex-basis: 20%;
+  margin: 10px;
+}
+
+.footer-section h3,
+.footer-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.footer-info p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer-links ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a,
+.footer-contact a {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover,
+.social-icons a:hover {
+  color: #e33434; /* Hover color to match the red theme */
+}
+
+.footer-contact a {
+  display: block;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  color: #f0f0f0;
+  font-size: 1rem;
+  text-decoration: none;
+}
+

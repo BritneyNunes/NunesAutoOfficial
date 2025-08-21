@@ -1,0 +1,76 @@
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from "react-router-dom"
+import SignUp from './SignUp';
+import Brand from './Brands';
+import './LogIn.css'
+
+function LogIn() {
+  const [data, setData] = useState({});
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      let response = await fetch("http://localhost:3000/checkpassword", {
+        method: "GET",
+        headers: {
+          Authorization: `Basic ${btoa(`${data.Email}:${data.Password}`)}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid username or password");
+      }
+      
+      const responseData = await response.json();
+      console.log("Frontend Response", responseData);
+      console.log("Frontend Data", data);
+
+      if (responseData) {
+        localStorage.setItem("user", JSON.stringify(data));
+        navigate("/");
+      } else {
+        setError("Invalid username or password");
+      }
+    } catch (error) {
+      setError("Error signing in, please try again.");
+    }
+  };
+
+  return (
+    <div className='logIn'>
+      <div className='LGformContainer'>
+        <h3 className='LGheading'>Log In</h3>
+        <hr className='LGform-divider'/>
+        <form className='LGform' onSubmit={handleLogin}>
+          {error && <div className="error-message">{error}</div>}
+          <label className='LGlabel'>Email:</label>
+          <input className='LGinput' type='email' placeholder="johndoe@gmail.com" onChange={(e) => setData({ ...data, Email: e.target.value })} required></input>
+          <label className='LGlabel'>Password:</label>
+          <input className='LGinput' type='password' placeholder='johnisawesome5' onChange={(e) => setData({ ...data, Password: e.target.value })} required></input>
+          <button type="submit" className='LGbutton'>Log In</button>
+          <hr className='LGform-divider'></hr>
+          <div className="LGlinkSection">
+            <p>Don't have an account?</p>
+            <Link to="/signUp" element={<SignUp />}>Sign Up</Link>
+          </div>
+        </form>
+        <Link to="/brand" element={<Brand />} className='LGbrowse-btn'>
+          <button>Browse products</button>
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+export default LogIn;
