@@ -1,50 +1,67 @@
-*{
+/* Parts.css */
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
 
-.parts{
-    height: 125vh;
+.parts {
+    /* Changed to min-height so it expands to fit content */
+    min-height: 100vh;
     background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
+    padding-bottom: 2rem;
 }
 
-.allProds{
+.allProds {
     border: 5px solid black;
-    height: 100vh;
+    /* Removed fixed height, changed to auto so it grows with content */
+    height: auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    /* justify-content: space-between; */
+    justify-content: center; /* Centered items horizontally */
     gap: 2vw;
+    padding: 2vw; /* Added padding for spacing */
 }
 
-.products{
-    margin-left: 6vw;
+.products {
     border: 2px solid blue;
+    background-color: #000;
+    opacity: 0.8;
     border-radius: 15px;
     width: 23vw;
-    height: 55vh;
+    min-height: 55vh; /* Changed to min-height to accommodate more content */
     display: flex;
-    /* padding: 2vh 2vw; */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center content horizontally */
+    padding: 1vw; /* Added padding for internal spacing */
 }
 
-.prodImage{
-    margin-top: 5vh;
-    height: fit-content;
-    width: 23vw;
+.prodImage {
+    /* Now fits perfectly inside the parent container */
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
 }
 
-.prodName{
+.prodName,
+.prodPrice,
+.prodDesc {
     color: white;
+    text-align: center;
+    margin-top: 1vh;
 }
 
-.brandsBtn{
-    height: 5vh;
-    width: 8vw;
-}
-
-.brandsBtn a{
-    text-decoration: none;
-    color: black;
+/* Styles for the new "Back" button */
+.back-button {
+  background-color: #5b7fb5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 1rem;
 }

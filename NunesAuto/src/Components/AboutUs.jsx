@@ -18,7 +18,7 @@ function AboutUs() {
 
         <div className="stats-section">
           <div className="stat-item">
-            <div className="stat-number">5000+</div>
+            <div className="stat-number">3700+</div>
             <div className="stat-label">Orders in the Past 2 Years</div>
           </div>
           <div className="stat-item">

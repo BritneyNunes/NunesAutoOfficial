@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BrandsProvider } from './Components/BrandsContext'
 import Home from './Components/Home'
 import Brand from './Components/Brands'
 import Cart from './Components/Cart'
@@ -15,7 +16,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 
 function App() {
   return(
-    <Router>
+    <BrandsProvider>
+      <Router>
       <>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -30,8 +32,9 @@ function App() {
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/aboutUs" element={<AboutUs />} />
       </Routes>
-    </>
-    </Router>
+      </>
+      </Router>
+    </BrandsProvider>
   )
 }
 
