@@ -1,0 +1,96 @@
+/* General container to match the overall page gradient */
+.checkout-container {
+    background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif; /* Set a default font */
+}
+
+/* Central content card */
+.checkout-content {
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    background-color: #fff;
+}
+
+/* Title and headings */
+.checkout-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.section-title {
+    font-weight: bold;
+    color: #555;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Back button styling */
+.back-button {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.back-button:hover {
+    color: #000;
+}
+
+/* Order Summary section */
+.order-summary {
+    margin-top: 20px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.summary-item.total-row {
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.summary-divider {
+    margin: 20px 0;
+}
+
+/* Place Order Button styling */
+.place-order-button {
+    background-color: #0b1a36; /* Dark blue from your nav bar */
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 30px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.place-order-button:hover {
+    background-color: #1d3a6d; /* Lighter blue on hover */
+}
+
+/* Message box for errors or success */
+.message-box {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+}

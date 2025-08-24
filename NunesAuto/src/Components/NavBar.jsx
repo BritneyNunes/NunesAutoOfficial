@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import SignUp from "./SignUp"
 import "./NavBar.css"
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 function NavBar() {
   return (
@@ -22,7 +23,7 @@ function NavBar() {
       </ul>
 
       <div className="nav-links-side">
-        <Link to="/cart" className="side-link">Cart</Link>
+        <Link to="/cart" className="side-link"><ShoppingCartIcon /></Link>
         <Link to="/signUp" element={<SignUp />} className="side-link">SignUp</Link>
       </div>
     </nav>
