@@ -112,7 +112,7 @@ function Checkout() {
                 // In a real app, you would call an API to clear the cart
                 await fetch('http://localhost:3000/clear-cart', { method: 'POST' });
                 // Redirect to a success page
-                navigate('/order-confirmation');
+                navigate('/orders');
             } else {
                 setMessage(response.message);
             }

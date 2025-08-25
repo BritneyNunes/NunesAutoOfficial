@@ -1,0 +1,171 @@
+/* Add these global styles to the top of your file */
+html, body {
+  margin: 0;
+  padding: 0;
+     background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
+
+}
+
+.order-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  /* Removed background-color from here to apply it to the whole body */
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #555;
+  text-decoration: none;
+  font-size: 1.5rem;
+  transition: color 0.2s;
+}
+
+.back-button:hover {
+  color: #007bff;
+}
+
+.order-container h1 {
+  text-align: center;
+  color: white;
+  margin: 0 0 30px 0;
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+}
+
+.order-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.order-header h3 {
+  margin: 0;
+  color: #555;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.order-header p {
+  margin: 5px 0 0;
+  color: #777;
+  font-size: 0.95em;
+}
+
+.order-body {
+  margin-bottom: 20px;
+}
+
+.order-body h4 {
+  margin: 0 0 15px 0;
+  font-size: 1.1em;
+  color: #444;
+}
+
+.order-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.item-details {
+  flex-grow: 1;
+}
+
+.item-name {
+  font-weight: 600;
+  margin: 0 0 5px;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.item-details p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95em;
+}
+
+.order-summary {
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.order-summary p {
+  margin: 5px 0;
+  text-align: right;
+  font-size: 1.1em;
+}
+
+.order-summary p strong {
+  color: #333;
+}
+
+.order-summary p:last-child {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #000;
+}
+
+.no-orders {
+  text-align: center;
+  color: #777;
+  padding: 50px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  margin-top: 40px;
+  background-color: #fefefe;
+}
+
+.no-orders p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.no-orders a {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.no-orders a:hover {
+  background-color: #0056b3;
+}

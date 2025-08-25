@@ -6,19 +6,23 @@ import Home from './Home'
 import { useNavigate } from 'react-router-dom'
 import './SignUp.css'
 
-function SignUp() {
+// Accept the new prop from App.jsx
+function SignUp({ onSignUpSuccess }) {
   const [data, setData] = useState({});
   const navigate = useNavigate();
+  // The user is still checked from localStorage, but the state update
+  // is now handled by the prop from App.jsx
   const user = JSON.parse(localStorage.getItem("user"));
 
+  // This is a common pattern to check for existing login status
   useEffect(() => {
-  if (user) {
-    navigate("/"); 
-    console.log("user in local storage, redirecting to home page");
-  } else {
-    console.log("no user in local storage");
-  }
-}, [navigate, user]); 
+    if (user) {
+      navigate("/"); 
+      console.log("user in local storage, redirecting to home page");
+    } else {
+      console.log("no user in local storage");
+    }
+  }, [navigate, user]); 
 
   const submition = async (e) => {
     e.preventDefault();
@@ -43,7 +47,8 @@ function SignUp() {
       if (responseData) {
         alert("Welcome To The Nunes Auto Family");
         localStorage.setItem("user", JSON.stringify(data));
-        setData(responseData);
+        // Call the prop to update the state in App.jsx
+        onSignUpSuccess();
         navigate("/");
       }
     } catch (error) {
@@ -81,14 +86,16 @@ function SignUp() {
           <hr className='form-divider' />
           
           <p className="login-text">Already have an account?</p>
-          <Link to="/login" element={<LogIn />} className="login-link">Log In</Link>
+          {/* Removed the 'element' prop from Link components, as it is not needed */}
+          <Link to="/login" className="login-link">Log In</Link>
         </form>
       </div>
-      <Link to="/brand" element={<Brand />} className='browse-btn'>
+      {/* Removed the 'element' prop from Link components, as it is not needed */}
+      <Link to="/brand" className='browse-btn'>
         <button>Browse products</button>
       </Link>
     </div>
   )
 }
 
-export default SignUp
+export default SignUp;

@@ -1,9 +1,21 @@
-import { Link } from "react-router-dom"
-import SignUp from "./SignUp"
-import "./NavBar.css"
+import { useState } from 'react'; // Added this import
+import { Link } from "react-router-dom";
+import "./NavBar.css";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
-function NavBar() {
+// The NavBar component now accepts isLoggedIn and onLogout props
+function NavBar({ isLoggedIn, onLogout }) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    onLogout();
+    setIsDropdownOpen(false); // Close the dropdown on logout
+  };
+
   return (
     <nav className="nav-container">
       <h3 className="nav-logo">
@@ -24,10 +36,29 @@ function NavBar() {
 
       <div className="nav-links-side">
         <Link to="/cart" className="side-link"><ShoppingCartIcon /></Link>
-        <Link to="/signUp" element={<SignUp />} className="side-link">SignUp</Link>
+        
+        {/* Conditional rendering for the "Sign Up" link */}
+        {isLoggedIn ? (
+          <div className="dropdown-container">
+            <div className="side-link" onClick={toggleDropdown}>
+              My Account
+            </div>
+            {isDropdownOpen && (
+              <div className="dropdown-menu">
+                <Link to="/profile" className="dropdown-item" onClick={toggleDropdown}>Profile</Link>
+                <Link to="/orders" className="dropdown-item" onClick={toggleDropdown}>Orders</Link>
+                <button onClick={handleLogout} className="dropdown-item logout-btn">
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link to="/signUp" className="side-link">Sign Up</Link>
+        )}
       </div>
     </nav>
-  )
+  );
 }
 
-export default NavBar
+export default NavBar;

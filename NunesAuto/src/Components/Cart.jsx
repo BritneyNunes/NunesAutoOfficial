@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -10,13 +10,14 @@ import "./Cart.css"
 const deliveryOptions = [
   { id: 'standard', name: 'Standard Delivery', description: '3-5 business days', price: 50.00 },
   { id: 'express', name: 'Express Delivery', description: '1-2 business days', price: 150.00 },
-   { id: 'priority', name: 'Priority Delivery', description: '3-5 hours', price: 250.00 },
+  { id: 'priority', name: 'Priority Delivery', description: '3-5 hours', price: 250.00 },
 ];
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [message, setMessage] = useState('');
   const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]); // Default to the first option
+  const navigate = useNavigate();
 
   const fetchCart = async () => {
     try {
@@ -78,7 +79,38 @@ function Cart() {
     setSelectedDelivery(option);
   };
 
-  // Recalculate total whenever cart items or selected delivery option changes
+  const handleProceedToCheckout = async (e) => {
+    const orderData = {
+      products: cartItems,
+      deliveryOption: selectedDelivery,
+      subtotal: subtotal,
+      total: total,
+      datePlaced: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!response.ok) {
+        e.preventDefault(); 
+        throw new Error("Failed to post order data.");
+      }
+
+      setMessage("Order data posted successfully! Redirecting...");
+      
+    } catch (error) {
+      e.preventDefault();
+      console.error("Error posting order data:", error);
+      setMessage("Failed to proceed to checkout. Please try again.");
+    }
+  };
+
   const subtotal = cartItems.reduce((acc, item) => {
     const price = Number(item.Price.replace(/[^0-9.-]+/g, "")) || 0;
     return acc + (price * item.quantity);
@@ -88,7 +120,6 @@ function Cart() {
 
   return (
     <div className="cart">
-      
       <div className="cart-container">
         <Link to="/brand" className="back-button">
           <KeyboardBackspaceIcon />
@@ -97,12 +128,12 @@ function Cart() {
         {message && <p className="message">{message}</p>}
 
         {cartItems.length === 0 ? (
-          <>
+          <div className="no-items-in-cart">
             <p>No items in cart.</p>
             <Link to="/parts" className="continue-shopping-button">
               Continue Shopping
             </Link>
-          </>
+          </div>
         ) : (
           <>
             <ul>
@@ -135,7 +166,6 @@ function Cart() {
               })}
             </ul>
 
-            {/* Delivery Options Table */}
             <h2 className="delivery-title">Delivery Options</h2>
             <table className="delivery-table">
               <thead>
@@ -170,9 +200,13 @@ function Cart() {
               <p className="subtotal-display">Subtotal: R{subtotal.toLocaleString()}</p>
               <p className="delivery-display">Delivery: R{selectedDelivery.price.toLocaleString()}</p>
               <p className="total-display">Total: R{total.toLocaleString()}</p>
-              <button className="proceed-to-checkout-button">
-                <Link to="/checkout" className="checkout-link">Proceed to Checkout</Link>
-              </button>
+              <Link
+                to="/checkout" 
+                className="proceed-to-checkout-button" 
+                onClick={handleProceedToCheckout}
+              >
+                Proceed to Checkout
+              </Link>
               <Link to="/brands" className="continue-shopping-button">
                 Continue Shopping
               </Link>

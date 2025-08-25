@@ -1,20 +1,15 @@
-import { useState, useEffect } from 'react'
-import { Link, useNavigate } from "react-router-dom"
-import SignUp from './SignUp';
-import Brand from './Brands';
+import { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import './LogIn.css'
 
-function LogIn() {
+// Accept the new prop from App.jsx
+function LogIn({ onLoginSuccess }) {
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
+  // Removed the useEffect hook that checked for a user in localStorage
+  // The App.jsx state will now handle whether the user is logged in
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -37,7 +32,9 @@ function LogIn() {
       console.log("Frontend Data", data);
 
       if (responseData) {
+        // Store user data in localStorage and then call the prop
         localStorage.setItem("user", JSON.stringify(data));
+        onLoginSuccess(); // This updates the state in App.jsx
         navigate("/");
       } else {
         setError("Invalid username or password");
@@ -62,15 +59,17 @@ function LogIn() {
           <hr className='LGform-divider'></hr>
           <div className="LGlinkSection">
             <p>Don't have an account?</p>
-            <Link to="/signUp" element={<SignUp />}>Sign Up</Link>
+            {/* The "element" prop is not used here and has been removed */}
+            <Link to="/signUp">Sign Up</Link>
           </div>
         </form>
-        <Link to="/brand" element={<Brand />} className='LGbrowse-btn'>
+        {/* The "element" prop is not used here and has been removed */}
+        <Link to="/brand" className='LGbrowse-btn'>
           <button>Browse products</button>
         </Link>
       </div>
     </div>
-  )
+  );
 }
 
 export default LogIn;

@@ -1,4 +1,9 @@
-/* General container to match the overall page gradient */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .checkout-container {
     background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
     min-height: 100vh;
@@ -8,10 +13,9 @@
     justify-content: center;
     padding: 20px;
     box-sizing: border-box;
-    font-family: Arial, sans-serif; /* Set a default font */
+    font-family: Arial, sans-serif; 
 }
 
-/* Central content card */
 .checkout-content {
     width: 100%;
     max-width: 500px;
@@ -22,7 +26,6 @@
     background-color: #fff;
 }
 
-/* Title and headings */
 .checkout-title {
     font-weight: bold;
     color: #333;
@@ -38,7 +41,6 @@
     margin-bottom: 20px;
 }
 
-/* Back button styling */
 .back-button {
     position: absolute;
     top: 25px;
@@ -52,7 +54,6 @@
     color: #000;
 }
 
-/* Order Summary section */
 .order-summary {
     margin-top: 20px;
 }
@@ -72,7 +73,6 @@
     margin: 20px 0;
 }
 
-/* Place Order Button styling */
 .place-order-button {
     background-color: #0b1a36; /* Dark blue from your nav bar */
     color: #fff;
@@ -88,7 +88,6 @@
     background-color: #1d3a6d; /* Lighter blue on hover */
 }
 
-/* Message box for errors or success */
 .message-box {
     text-align: center;
     padding: 10px;
