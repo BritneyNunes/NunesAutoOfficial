@@ -57,6 +57,7 @@ function NavBar({ isLoggedIn, onLogout }) {
           <Link to="/signUp" className="side-link">Sign Up</Link>
         )}
       </div>
+
     </nav>
   );
 }

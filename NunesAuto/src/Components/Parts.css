@@ -26,6 +26,10 @@
   background-color: #e33434;
 }
 
+.loader{
+  width: 10vw;
+  height: 10vh;
+}
 /* Main Container for all products */
 .allProds {
   display: grid;

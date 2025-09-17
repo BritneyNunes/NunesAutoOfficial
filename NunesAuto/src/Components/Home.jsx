@@ -11,7 +11,6 @@ function Home() {
         <div className='text'>
         <h1 className='bigLogo'>NunesAuto</h1>
         <p className='phrase'>Moving faster, together</p>
-        {/* <img className='bgImage' src="../public/Home Page background.webp"/> */}
         </div>
         <Footer />
         </div>

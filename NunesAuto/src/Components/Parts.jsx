@@ -6,6 +6,7 @@ import './Parts.css'
 import { BrandsContext } from './BrandsContext'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 function Parts() {
@@ -25,12 +26,12 @@ function Parts() {
         if (Array.isArray(data)) {
         setParts(data);
         } else {
-       setError("Data received from the server is not a valid array.");
+      //  setError("Data received from the server is not a valid array.");
        }
       })
        .catch(err => {
         console.error("Fetch error:", err);
-      setError("Could not load parts. Please try again later.");
+      // setError("Could not load parts. Please try again later.");
       });
   }, []);
 
@@ -54,6 +55,7 @@ function Parts() {
         if (!res.ok) {
           throw new Error("Failed to add item to cart.");
         }
+        console.log(res.json())
         return res.json();
       })
       .then(data => {
@@ -83,7 +85,7 @@ function Parts() {
           </div>
           ))
           ) : (
-            <p>No products available for this brand.</p>
+            <CircularProgress className="loader" disableShrink/>
           )}
       </div>
      </div>
