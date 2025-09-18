@@ -95,9 +95,9 @@
   color: #103666;
 }
 
-/* .about-list li:first-child strong{
+.about-list li:first-child strong{
   color: #0000ff;
-} */
+}
 
 .stats-section {
   display: flex;
