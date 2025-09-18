@@ -1,6 +1,6 @@
 import { useState } from 'react'; // Added this import
 import { Link } from "react-router-dom";
-import "./NavBar.css";
+import "./Navbar.css";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 // The NavBar component now accepts isLoggedIn and onLogout props
