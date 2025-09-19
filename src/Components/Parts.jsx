@@ -7,6 +7,7 @@ import { BrandsContext } from './BrandsContext'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CircularProgress from '@mui/material/CircularProgress';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 
 function Parts() {
@@ -15,7 +16,7 @@ function Parts() {
  const { selectedBrand } = useContext(BrandsContext); 
 
   useEffect(() => {
-   fetch("http://localhost:3000/parts") 
+   fetch(`http://${apiUrl}:3000/parts`) 
     .then(res => {
      if (!res.ok) {
         throw new Error(`Failed to fetch parts. Server responded with: ${res.status}`);
@@ -44,7 +45,7 @@ function Parts() {
 
   // Function to handle adding a part to the cart
   const handleAddToCart = (part) => {
-    fetch("http://localhost:3000/cart", {
+    fetch(`http://${apiUrl}:3000/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

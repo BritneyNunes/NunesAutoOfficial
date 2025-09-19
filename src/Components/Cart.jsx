@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "./Cart.css"
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // Define delivery options outside the component to avoid re-creation on every render
 const deliveryOptions = [

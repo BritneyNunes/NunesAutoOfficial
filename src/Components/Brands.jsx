@@ -8,6 +8,7 @@ import NavBar from './NavBar'
 import Footer from './Footer'
 import './Brands.css'
 import { BrandsContext } from './BrandsContext'
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function Brand() {
   const { brands, setSelectedBrand } = useContext(BrandsContext);
@@ -30,7 +31,7 @@ function Brand() {
             <SwiperSlide className='images' key={brand._id}>
               <Link
                 to='/parts'
-                // ✅ REMOVED: The `element={<Parts />}` prop is not used here and is unnecessary.
+                
                 onClick={() => setSelectedBrand(brand)} // This line correctly updates the context.
               >
                 <button>

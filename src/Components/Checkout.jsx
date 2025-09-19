@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Typography, Container, Box, TextField, Button, Grid, Paper, Divider } from '@mui/material';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import './Checkout.css';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function Checkout() {
     // State variables for form fields and cart data

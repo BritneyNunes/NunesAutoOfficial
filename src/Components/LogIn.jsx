@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './LogIn.css'
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // Accept the new prop from App.jsx
 function LogIn({ onLoginSuccess }) {

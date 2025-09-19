@@ -5,6 +5,7 @@ import Brand from './Brands'
 import Home from './Home'
 import { useNavigate } from 'react-router-dom'
 import './SignUp.css'
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // Accept the new prop from App.jsx
 function SignUp({ onSignUpSuccess }) {

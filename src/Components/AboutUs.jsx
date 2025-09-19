@@ -1,6 +1,8 @@
 import NavBar from './NavBar'
 import Footer from './Footer'
 import './AboutUs.css'
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 function AboutUs() {
   return (

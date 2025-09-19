@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import NavBar from './NavBar';
 import './Orders.css';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function Order() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
 
   useEffect(() => {
     const fetchOrders = async () => {
