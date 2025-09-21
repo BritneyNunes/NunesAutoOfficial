@@ -5,7 +5,9 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "./Cart.css"
-const apiUrl = import.meta.env.VITE_API_URL;
+import { getBaseUrl } from "../Utilities/getBaseUrl";
+import { useApi } from "./ApiContext";
+
 
 // Define delivery options outside the component to avoid re-creation on every render
 const deliveryOptions = [
@@ -15,14 +17,23 @@ const deliveryOptions = [
 ];
 
 function Cart() {
+  const { apiUrl } = useApi(); //Get apiURL from context 
   const [cartItems, setCartItems] = useState([]);
   const [message, setMessage] = useState('');
   const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]); // Default to the first option
   const navigate = useNavigate();
 
   const fetchCart = async () => {
+      const baseUrl = getBaseUrl();
+      
+         if(apiUrl){
+             let url = baseUrl
+           } else {
+             url = apiUrl
+           }
+
     try {
-      const response = await fetch("http://localhost:3000/cart");
+      const response = await fetch(`${url}/cart`);
       if (!response.ok) {
         throw new Error("Failed to fetch cart");
       }
@@ -62,7 +73,7 @@ function Cart() {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const response = await fetch(`http://localhost:3000/cart/${itemId}`, {
+      const response = await fetch(`${url}/cart/${itemId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -90,7 +101,7 @@ function Cart() {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/orders", {
+      const response = await fetch(`${url}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

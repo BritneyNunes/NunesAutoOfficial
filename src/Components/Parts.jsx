@@ -7,16 +7,27 @@ import { BrandsContext } from './BrandsContext'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CircularProgress from '@mui/material/CircularProgress';
-const apiUrl = import.meta.env.VITE_API_URL;
+import { useApi } from "./ApiContext";
+import { getBaseUrl } from "../Utilities/getBaseUrl"; 
+
 
 
 function Parts() {
+ const { apiUrl } = useApi(); //Get apiURL from context 
  const [parts, setParts] = useState([]);
  const [error, setError] = useState(""); 
  const { selectedBrand } = useContext(BrandsContext); 
 
   useEffect(() => {
-   fetch(`http://${apiUrl}:3000/parts`) 
+   const baseUrl = getBaseUrl();
+
+   if(apiUrl){
+       let url = baseUrl
+     } else {
+       url = apiUrl
+     }
+  
+   fetch(`${url}/parts`) 
     .then(res => {
      if (!res.ok) {
         throw new Error(`Failed to fetch parts. Server responded with: ${res.status}`);

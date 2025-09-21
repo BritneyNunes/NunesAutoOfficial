@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './LogIn.css'
-const apiUrl = import.meta.env.VITE_API_URL;
+import { useApi } from "./ApiContext";
+import { getBaseUrl } from "../Utilities/getBaseUrl";
 
 // Accept the new prop from App.jsx
 function LogIn({ onLoginSuccess }) {
+   const { apiUrl } = useApi(); //Get apiURL from context 
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -13,11 +15,13 @@ function LogIn({ onLoginSuccess }) {
   // The App.jsx state will now handle whether the user is logged in
 
   const handleLogin = async (e) => {
+       const baseUrl = getBaseUrl();
+    
     e.preventDefault();
     setError("");
 
     try {
-      let response = await fetch("http://localhost:3000/checkpassword", {
+      let response = await fetch(`${url}/checkpassword`, {
         method: "GET",
         headers: {
           Authorization: `Basic ${btoa(`${data.Email}:${data.Password}`)}`,

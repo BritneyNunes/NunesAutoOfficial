@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useApi } from "./ApiContext";
+import { getBaseUrl } from "../Utilities/getBaseUrl"; 
 
 export const BrandsContext = createContext();
 
@@ -10,7 +11,16 @@ export function BrandsProvider({ children }) {
   const [selectedBrand, setSelectedBrand] = useState(null); // Using `null` is a good practice for an initial state with no selected brand.
 
   useEffect(() => {
-    fetch(`${apiUrl}/brands`)
+    const baseUrl = getBaseUrl();
+    console.log(`BaseUrl ${baseUrl}`)
+
+  if(apiUrl){
+    let url = baseUrl
+  } else {
+    url = apiUrl
+  }
+
+    fetch(`${url}/brands`)
       .then((res) => res.json())
       .then((data) => setBrands(data))
       .catch((err) => console.error("Error fetching brands:", err));
