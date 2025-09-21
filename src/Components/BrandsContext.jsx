@@ -1,21 +1,16 @@
-// BrandsContext.jsx
 import { createContext, useState, useEffect } from "react";
-// const apiUrl = import.meta.env.VITE_API_URL;
-
-const url = new URL(window.location);
-url.searchParams.get("ip", "123.45.67.89");
-window.history.pushState({}, "", url); // updates the URL without reload
-
+import { useApi } from "./ApiContext";
 
 export const BrandsContext = createContext();
 
 export function BrandsProvider({ children }) {
+  const { apiUrl } = useApi(); //Get apiURL from context 
   const [brands, setBrands] = useState([]);
-  // ✅ FIX: The setter function's name is changed from `setSelectedBrands` to `setSelectedBrand`.
+  
   const [selectedBrand, setSelectedBrand] = useState(null); // Using `null` is a good practice for an initial state with no selected brand.
 
   useEffect(() => {
-    fetch(`${url}/brands`)
+    fetch(`${apiUrl}/brands`)
       .then((res) => res.json())
       .then((data) => setBrands(data))
       .catch((err) => console.error("Error fetching brands:", err));
