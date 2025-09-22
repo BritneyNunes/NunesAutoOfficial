@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
+// import { useApi } from "./ApiContext";
+// import { useIp } from "./IpContext";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "./Cart.css"
-const apiUrl = import.meta.env.VITE_API_URL;
 
-// Define delivery options outside the component to avoid re-creation on every render
+// Define delivery options outside the component
 const deliveryOptions = [
   { id: 'standard', name: 'Standard Delivery', description: '3-5 business days', price: 50.00 },
   { id: 'express', name: 'Express Delivery', description: '1-2 business days', price: 150.00 },
@@ -15,17 +16,21 @@ const deliveryOptions = [
 ];
 
 function Cart() {
+  // const { apiUrl } = useApi();      
+  // const { ip } = useIp();           
   const [cartItems, setCartItems] = useState([]);
   const [message, setMessage] = useState('');
-  const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]); // Default to the first option
+  const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]); 
   const navigate = useNavigate();
 
+  // Use IP query string if provided, else ApiContext
+  const baseUrl = ip ? `http://${ip}:3000` : apiUrl;
+
+  // Fetch cart items from backend
   const fetchCart = async () => {
     try {
-      const response = await fetch("http://localhost:3000/cart");
-      if (!response.ok) {
-        throw new Error("Failed to fetch cart");
-      }
+      const response = await fetch(`${baseUrl}/cart`);
+      if (!response.ok) throw new Error("Failed to fetch cart");
       const data = await response.json();
       const itemsWithQuantity = Array.isArray(data) ? data.map(item => ({ ...item, quantity: 1 })) : [];
       setCartItems(itemsWithQuantity);
@@ -38,14 +43,12 @@ function Cart() {
 
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [baseUrl]); // re-fetch if baseUrl changes
 
   const handleIncreaseQuantity = (itemId) => {
     setCartItems(currentItems =>
       currentItems.map(item =>
-        item._id === itemId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+        item._id === itemId ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   };
@@ -53,21 +56,15 @@ function Cart() {
   const handleDecreaseQuantity = (itemId) => {
     setCartItems(currentItems =>
       currentItems.map(item =>
-        item._id === itemId && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
+        item._id === itemId && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
       )
     );
   };
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const response = await fetch(`http://localhost:3000/cart/${itemId}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error("Failed to remove item from cart.");
-      }
+      const response = await fetch(`${baseUrl}/cart/${itemId}`, { method: 'DELETE' });
+      if (!response.ok) throw new Error("Failed to remove item from cart.");
       setCartItems(currentItems => currentItems.filter(item => item._id !== itemId));
       setMessage("Item removed from cart successfully.");
     } catch (error) {
@@ -76,41 +73,7 @@ function Cart() {
     }
   };
 
-  const handleDeliveryChange = (option) => {
-    setSelectedDelivery(option);
-  };
-
-  const handleProceedToCheckout = async (e) => {
-    const orderData = {
-      products: cartItems,
-      deliveryOption: selectedDelivery,
-      subtotal: subtotal,
-      total: total,
-      datePlaced: new Date().toISOString(),
-    };
-
-    try {
-      const response = await fetch("http://localhost:3000/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
-
-      if (!response.ok) {
-        e.preventDefault(); 
-        throw new Error("Failed to post order data.");
-      }
-
-      setMessage("Order data posted successfully! Redirecting...");
-      
-    } catch (error) {
-      e.preventDefault();
-      console.error("Error posting order data:", error);
-      setMessage("Failed to proceed to checkout. Please try again.");
-    }
-  };
+  const handleDeliveryChange = (option) => setSelectedDelivery(option);
 
   const subtotal = cartItems.reduce((acc, item) => {
     const price = Number(item.Price.replace(/[^0-9.-]+/g, "")) || 0;
@@ -118,6 +81,30 @@ function Cart() {
   }, 0);
 
   const total = subtotal + (selectedDelivery?.price || 0);
+
+  const handleProceedToCheckout = async (e) => {
+    const orderData = {
+      products: cartItems,
+      deliveryOption: selectedDelivery,
+      subtotal,
+      total,
+      datePlaced: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch(`${baseUrl}/orders`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+      if (!response.ok) throw new Error("Failed to post order data.");
+      setMessage("Order data posted successfully! Redirecting...");
+    } catch (error) {
+      e.preventDefault();
+      console.error("Error posting order data:", error);
+      setMessage("Failed to proceed to checkout. Please try again.");
+    }
+  };
 
   return (
     <div className="cart">
@@ -150,17 +137,11 @@ function Cart() {
                     </div>
                     <div className="quantity-and-buttons">
                       <div className="quantity-controls">
-                        <button onClick={() => handleDecreaseQuantity(item._id)} className="quantity-btn">
-                          <RemoveIcon />
-                        </button>
+                        <button onClick={() => handleDecreaseQuantity(item._id)} className="quantity-btn"><RemoveIcon /></button>
                         <span className="quantity-display">{item.quantity}</span>
-                        <button onClick={() => handleIncreaseQuantity(item._id)} className="quantity-btn">
-                          <AddIcon />
-                        </button>
+                        <button onClick={() => handleIncreaseQuantity(item._id)} className="quantity-btn"><AddIcon /></button>
                       </div>
-                      <button onClick={() => handleRemoveItem(item._id)} className="delete-btn">
-                        <DeleteIcon />
-                      </button>
+                      <button onClick={() => handleRemoveItem(item._id)} className="delete-btn"><DeleteIcon /></button>
                     </div>
                   </li>
                 );
@@ -181,10 +162,7 @@ function Cart() {
                 {deliveryOptions.map(option => (
                   <tr key={option.id} className={selectedDelivery.id === option.id ? 'selected-delivery-row' : ''}>
                     <td>
-                      <input
-                        type="radio"
-                        id={option.id}
-                        name="deliveryOption"
+                      <input type="radio" id={option.id} name="deliveryOption"
                         checked={selectedDelivery.id === option.id}
                         onChange={() => handleDeliveryChange(option)}
                       />
@@ -201,16 +179,10 @@ function Cart() {
               <p className="subtotal-display">Subtotal: R{subtotal.toLocaleString()}</p>
               <p className="delivery-display">Delivery: R{selectedDelivery.price.toLocaleString()}</p>
               <p className="total-display">Total: R{total.toLocaleString()}</p>
-              <Link
-                to="/checkout" 
-                className="proceed-to-checkout-button" 
-                onClick={handleProceedToCheckout}
-              >
+              <Link to="/checkout" className="proceed-to-checkout-button" onClick={handleProceedToCheckout}>
                 Proceed to Checkout
               </Link>
-              <Link to="/brands" className="continue-shopping-button">
-                Continue Shopping
-              </Link>
+              <Link to="/brands" className="continue-shopping-button">Continue Shopping</Link>
             </div>
           </>
         )}

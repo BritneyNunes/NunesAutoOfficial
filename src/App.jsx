@@ -28,6 +28,7 @@ function App() {
   };
 
   return (
+
     <BrandsProvider>
       <Router>
         <>
