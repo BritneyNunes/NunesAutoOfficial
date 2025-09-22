@@ -3,18 +3,28 @@ import { Link } from 'react-router-dom';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import NavBar from './NavBar';
 import './Orders.css';
-const apiUrl = import.meta.env.VITE_API_URL;
+import { useApi } from "./ApiContext";
+import { getBaseUrl } from "../Utilities/getBaseUrl";
 
 function Order() {
+   const { apiUrl } = useApi(); //Get apiURL from context 
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
 
   useEffect(() => {
+       const baseUrl = getBaseUrl();
+
+        if(apiUrl){
+              let url = baseUrl
+            } else {
+              url = apiUrl
+            }
+
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:3000/orders");
+        const response = await fetch(`${url}/orders`);
         if (!response.ok) {
           throw new Error("Failed to fetch orders from the server.");
         }

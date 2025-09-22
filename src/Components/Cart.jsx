@@ -28,6 +28,14 @@ function Cart() {
 
   // Fetch cart items from backend
   const fetchCart = async () => {
+      const baseUrl = getBaseUrl();
+      
+         if(apiUrl){
+             let url = baseUrl
+           } else {
+             url = apiUrl
+           }
+
     try {
       const response = await fetch(`${baseUrl}/cart`);
       if (!response.ok) throw new Error("Failed to fetch cart");

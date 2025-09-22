@@ -3,10 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Typography, Container, Box, TextField, Button, Grid, Paper, Divider } from '@mui/material';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import './Checkout.css';
-const apiUrl = import.meta.env.VITE_API_URL;
+import { useApi } from "./ApiContext";
+import { getBaseUrl } from "../Utilities/getBaseUrl";
 
 function Checkout() {
     // State variables for form fields and cart data
+     const { apiUrl } = useApi(); //Get apiURL from context 
     const [cartItems, setCartItems] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
     const [taxes, setTaxes] = useState(0);
@@ -22,10 +24,18 @@ function Checkout() {
 
     // Fetch cart items from the server (simulated)
     useEffect(() => {
+       const baseUrl = getBaseUrl();
+       
+          if(apiUrl){
+              let url = baseUrl
+            } else {
+              url = apiUrl
+            }
+
         const fetchCart = async () => {
             try {
                 // Simulate fetching cart data from a real API
-                const response = await fetch("http://localhost:3000/cart");
+                const response = await fetch(`${url}/cart`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch cart");
                 }
@@ -111,7 +121,7 @@ function Checkout() {
             if (response.status === 200) {
                 setMessage(response.message);
                 // In a real app, you would call an API to clear the cart
-                await fetch('http://localhost:3000/clear-cart', { method: 'POST' });
+                await fetch(`${url}/clear-cart`, { method: 'POST' });
                 // Redirect to a success page
                 navigate('/orders');
             } else {
