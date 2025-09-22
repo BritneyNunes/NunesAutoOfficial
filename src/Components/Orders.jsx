@@ -3,28 +3,21 @@ import { Link } from 'react-router-dom';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import NavBar from './NavBar';
 import './Orders.css';
-import { useApi } from "./ApiContext";
 import { getBaseUrl } from "../Utilities/getBaseUrl";
 
-function Order() {
-   const { apiUrl } = useApi(); //Get apiURL from context 
+const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
+console.log(`Base URL used for fetching brands: ${baseUrl}`);
+
+function Order() { 
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
 
   useEffect(() => {
-       const baseUrl = getBaseUrl();
-
-        if(apiUrl){
-              let url = baseUrl
-            } else {
-              url = apiUrl
-            }
-
-    const fetchOrders = async () => {
+      const fetchOrders = async () => {
       try {
-        const response = await fetch(`${url}/orders`);
+        const response = await fetch(`${baseUrl}/orders`);
         if (!response.ok) {
           throw new Error("Failed to fetch orders from the server.");
         }

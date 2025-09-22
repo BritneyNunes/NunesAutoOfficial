@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './LogIn.css'
-import { useApi } from "./ApiContext";
 import { getBaseUrl } from "../Utilities/getBaseUrl";
 
+const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
+    console.log(`Base URL used for fetching brands: ${baseUrl}`);
+
 // Accept the new prop from App.jsx
-function LogIn({ onLoginSuccess }) {
-   const { apiUrl } = useApi(); //Get apiURL from context 
+function LogIn({ onLoginSuccess }) { 
   const [data, setData] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -15,13 +16,11 @@ function LogIn({ onLoginSuccess }) {
   // The App.jsx state will now handle whether the user is logged in
 
   const handleLogin = async (e) => {
-       const baseUrl = getBaseUrl();
-    
     e.preventDefault();
     setError("");
 
     try {
-      let response = await fetch(`${url}/checkpassword`, {
+      let response = await fetch(`${baseUrl}/checkpassword`, {
         method: "GET",
         headers: {
           Authorization: `Basic ${btoa(`${data.Email}:${data.Password}`)}`,

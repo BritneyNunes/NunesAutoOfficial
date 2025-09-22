@@ -18,14 +18,15 @@ function Parts() {
   const { selectedBrand } = useContext(BrandsContext); 
   parts.forEach(p => console.log(p.Name, p.Price));
 
+  const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
+  console.log(`Base URL used for fetching parts: ${baseUrl}`);
+
   useEffect(() => {
     if (!selectedBrand) {
       setError("No brand selected.");
       return;
     }
 
-    const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
-    console.log(`Base URL used for fetching parts: ${baseUrl}`);
     
     // Fetch parts for the selected brand
     fetch(`${baseUrl}/parts?brandId=${selectedBrand._id}`)
@@ -49,7 +50,7 @@ function Parts() {
   }, [selectedBrand]); // Re-fetch if selectedBrand changes
 
   const handleAddToCart = (part) => {
-    fetch(`http://${apiUrl}:3000/cart`, {
+    fetch(`${baseUrl}/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +59,8 @@ function Parts() {
     })
       .then(res => {
         if (!res.ok) {
-          throw new Error("Failed to add item to cart.");
+          // console.log(`Response in json ${res.error.json()}`)
+          throw new Error("Item already in cart");
         }
         return res.json();
       })
@@ -68,7 +70,7 @@ function Parts() {
       })
       .catch(err => {
         console.error("Error adding to cart:", err);
-        alert("Could not add item to cart. Please try again.");
+        alert(err);
       });
       
   };
@@ -95,7 +97,7 @@ function Parts() {
                 </Link>
                 <div className='product-details'>
                   <p className='prodName'>{part.Name}</p>
-                  <p className='prodPrice'>${part.Price}</p>
+                  <p className='prodPrice'>{part.Price}</p>
                 </div>
                 <button className="addToCartBtn" onClick={() => handleAddToCart(part)}>
                   <ShoppingCartIcon /> Add to Cart

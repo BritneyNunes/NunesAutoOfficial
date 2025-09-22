@@ -3,12 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Typography, Container, Box, TextField, Button, Grid, Paper, Divider } from '@mui/material';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import './Checkout.css';
-import { useApi } from "./ApiContext";
 import { getBaseUrl } from "../Utilities/getBaseUrl";
 
+const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
+console.log(`Base URL used for fetching brands: ${baseUrl}`);
+
+
 function Checkout() {
-    // State variables for form fields and cart data
-     const { apiUrl } = useApi(); //Get apiURL from context 
     const [cartItems, setCartItems] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
     const [taxes, setTaxes] = useState(0);
@@ -24,18 +25,10 @@ function Checkout() {
 
     // Fetch cart items from the server (simulated)
     useEffect(() => {
-       const baseUrl = getBaseUrl();
-       
-          if(apiUrl){
-              let url = baseUrl
-            } else {
-              url = apiUrl
-            }
-
         const fetchCart = async () => {
             try {
                 // Simulate fetching cart data from a real API
-                const response = await fetch(`${url}/cart`);
+                const response = await fetch(`${baseUrl}/cart`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch cart");
                 }
@@ -121,7 +114,7 @@ function Checkout() {
             if (response.status === 200) {
                 setMessage(response.message);
                 // In a real app, you would call an API to clear the cart
-                await fetch(`${url}/clear-cart`, { method: 'POST' });
+                await fetch(`${baseUrl}/clear-cart`, { method: 'POST' });
                 // Redirect to a success page
                 navigate('/orders');
             } else {

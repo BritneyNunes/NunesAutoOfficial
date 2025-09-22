@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-// import { useApi } from "./ApiContext";
-// import { useIp } from "./IpContext";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "./Cart.css"
+import { getBaseUrl } from "../Utilities/getBaseUrl"; // Import utility for base URL
 
 // Define delivery options outside the component
 const deliveryOptions = [
@@ -15,27 +14,18 @@ const deliveryOptions = [
   { id: 'priority', name: 'Priority Delivery', description: '3-5 hours', price: 250.00 },
 ];
 
-function Cart() {
-  // const { apiUrl } = useApi();      
-  // const { ip } = useIp();           
+const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
+console.log(`Base URL used for fetching brands: ${baseUrl}`);
+
+function Cart() {           
   const [cartItems, setCartItems] = useState([]);
   const [message, setMessage] = useState('');
   const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]); 
   const navigate = useNavigate();
 
-  // Use IP query string if provided, else ApiContext
-  const baseUrl = ip ? `http://${ip}:3000` : apiUrl;
-
   // Fetch cart items from backend
   const fetchCart = async () => {
-      const baseUrl = getBaseUrl();
-      
-         if(apiUrl){
-             let url = baseUrl
-           } else {
-             url = apiUrl
-           }
-
+    
     try {
       const response = await fetch(`${baseUrl}/cart`);
       if (!response.ok) throw new Error("Failed to fetch cart");
@@ -48,7 +38,7 @@ function Cart() {
       setCartItems([]);
     }
   };
-
+  
   useEffect(() => {
     fetchCart();
   }, [baseUrl]); // re-fetch if baseUrl changes

@@ -5,12 +5,13 @@ import Brand from './Brands'
 import Home from './Home'
 import { useNavigate } from 'react-router-dom'
 import './SignUp.css'
-import { useApi } from "./ApiContext";
 import { getBaseUrl } from "../Utilities/getBaseUrl"; 
+
+const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
+console.log(`Base URL used for fetching brands: ${baseUrl}`);
 
 // Accept the new prop from App.jsx
 function SignUp({ onSignUpSuccess }) {
-   const { apiUrl } = useApi(); //Get apiURL from context 
   const [data, setData] = useState({});
   const navigate = useNavigate();
   // The user is still checked from localStorage, but the state update
@@ -19,15 +20,7 @@ function SignUp({ onSignUpSuccess }) {
 
   // This is a common pattern to check for existing login status
   useEffect(() => {
-    const baseUrl = getBaseUrl();
-    
-       if(apiUrl){
-           let url = baseUrl
-         } else {
-           url = apiUrl
-         }
-
-    if (user) {
+      if (user) {
       navigate("/"); 
       console.log("user in local storage, redirecting to home page");
     } else {
@@ -39,7 +32,7 @@ function SignUp({ onSignUpSuccess }) {
     e.preventDefault();
     try {
       let response = await fetch(
-        `${url}/users`, {
+        `${baseUrl}/users`, {
         method: "post",
         body: JSON.stringify({ data }),
         headers: {
