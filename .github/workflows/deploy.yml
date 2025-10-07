@@ -23,7 +23,7 @@ jobs:
           args: --delete
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          AWS_S3_BUCKET: www.nunesauto.com
+          AWS_S3_BUCKET: www.nunesauto1.co.za
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-east-1
