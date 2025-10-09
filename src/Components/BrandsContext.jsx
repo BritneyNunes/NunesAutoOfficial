@@ -3,17 +3,20 @@ import { getBaseUrl } from "../Utilities/getBaseUrl"; // Import utility for base
 
 export const BrandsContext = createContext();
 
+
 export function BrandsProvider({ children }) {
   const [brands, setBrands] = useState([]); // State to hold brands
   const [selectedBrand, setSelectedBrand] = useState(null); // State for selected brand
-
+  
   // Fetch brands from API on component mount
   useEffect(() => {
     const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
-    console.log(`Base URL used for fetching brands: ${baseUrl}`);
+
+    const apiUrl = process.env.REACT_APP_API_URL; 
+    console.log(`Base URL used for fetching brands: ${apiUrl}`);
 
     // Fetch the brands data from the API
-    fetch(`${baseUrl}/brands`)
+    fetch(`${apiUrl}/brands`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Failed to fetch brands: ${res.status}`);
