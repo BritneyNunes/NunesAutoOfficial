@@ -10,14 +10,14 @@ export function BrandsProvider({ children }) {
   
   // Fetch brands from API on component mount
   useEffect(() => {
-    
+
     const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    console.log(`Base URL used for fetching brands: ${apiUrl}`);
+    console.log(`Base URL used for fetching brands: ${baseUrl}`);
 
     // Fetch the brands data from the API
-    fetch(`${apiUrl}/brands`)
+    fetch(`${baseUrl}/brands`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Failed to fetch brands: ${res.status}`);
