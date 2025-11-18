@@ -11,6 +11,7 @@ import Orders from './Components/Orders';
 import Parts from './Components/Parts';
 import SignUp from './Components/SignUp';
 import AboutUs from './Components/AboutUs';
+import Profile from './Components/Profile';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/location" element={<Location />} />
+            <Route path="/profile" element={<Profile />} />
             
             {/* Pass the login handler to your login and signup components */}
             <Route path="/login" element={<LogIn onLoginSuccess={handleLoginSuccess} />} />

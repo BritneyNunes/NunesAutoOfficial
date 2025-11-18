@@ -8,7 +8,7 @@
 
 .cart-container {
   flex-grow: 1;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 40px auto;
   padding: 20px;
   background-color: #fff;

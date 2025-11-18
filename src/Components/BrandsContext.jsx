@@ -10,33 +10,51 @@ export function BrandsProvider({ children }) {
   
   // Fetch brands from API on component mount
   useEffect(() => {
+    
+    // 1. Define the asynchronous function
+    const fetchBrands = async () => {
+        const baseUrl = getBaseUrl();
+        const url = `${baseUrl}/brands`;
 
-    const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
-    const apiUrl = import.meta.env.VITE_API_URL;
+        // CRITICAL DEBUG: This synchronous log is the first thing that runs.
+        // If you still don't see this, the BrandsProvider component is not rendering.
+        console.log(`BrandsProvider useEffect running. Attempting to fetch from: ${url}`); 
+        
+        try {
+            const res = await fetch(url);
 
-    console.log(`Base URL used for fetching brands: ${baseUrl}`);
+            // Step 1: Check for non-200 status codes (404, 500, etc.)
+            if (!res.ok) {
+                // Read the response text for detailed error message
+                const text = await res.text();
+                throw new Error(`HTTP Error ${res.status} from brands API. Server response preview: ${text.substring(0, 100)}...`);
+            }
+            
+            // Step 2: Proceed to parse JSON.
+            const data = await res.json();
 
-    // Fetch the brands data from the API
-    fetch(`${baseUrl}/brands`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Failed to fetch brands: ${res.status}`);
+            // Step 3: Check if the parsed data is an array as expected.
+            if (Array.isArray(data)) {
+                console.log('Successfully fetched brands. Total:', data.length);
+                setBrands(data);
+            } else {
+                console.error("Unexpected response format: Brands API returned non-array data.", data);
+                setBrands([]);
+            }
+
+        } catch (err) {
+            // Step 4: Catch network errors, CORS issues, or the custom error thrown in Step 1.
+            console.error("ERROR FETCHING BRANDS. Check URL and backend status:", err.message);
+            setBrands([]); 
         }
-        return res.json();
-      })
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setBrands(data);  // Set brands if the response is an array
-        } else {
-          console.error("Unexpected response format:", data);
-          setBrands([]);  // Reset brands if the response format is unexpected
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching brands:", err);
-        setBrands([]);  // Reset brands in case of an error
-      });
-  }, []); // Empty dependency array to run only once when the component mounts
+    };
+
+    // 2. Immediately invoke the asynchronous function
+    fetchBrands();
+    
+    // NOTE: If you had a cleanup function (e.g., to cancel the request), you would return it here.
+    
+  }, []); // The empty dependency array is correct for running once on mount
 
   return (
     <BrandsContext.Provider value={{ brands, selectedBrand, setSelectedBrand }}>

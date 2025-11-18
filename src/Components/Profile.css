@@ -1,0 +1,26 @@
+.profile-container {
+  height: 60vh;
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 16px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+body{
+    background-color: none;
+}
+
+.profile-card p {
+  margin: 10px 0;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 8px;
+}
+
+.info{
+    height: 10vh;
+}

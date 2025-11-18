@@ -152,6 +152,8 @@ function Checkout() {
                             margin="normal"
                             variant="outlined"
                             placeholder="**** **** **** ****"
+                            minLength={16} // Enforce a minimum length of 10
+                            maxLength={18} 
                             required
                         />
                         <Grid container spacing={2}>

@@ -25,19 +25,52 @@ function Cart() {
 
   // Fetch cart items from backend
   const fetchCart = async () => {
-    
-    try {
-      const response = await fetch(`${baseUrl}/cart`);
-      if (!response.ok) throw new Error("Failed to fetch cart");
-      const data = await response.json();
-      const itemsWithQuantity = Array.isArray(data) ? data.map(item => ({ ...item, quantity: 1 })) : [];
-      setCartItems(itemsWithQuantity);
-    } catch (error) {
-      console.error("Error fetching cart:", error);
-      setMessage("Failed to load cart. Please ensure your backend is running.");
-      setCartItems([]);
+  try {
+    console.log("Fetching cart...");
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("User from localStorage:", user);
+
+    if (!user || !user.CustomerID) {
+      setMessage("Please log in to view your cart.");
+      console.warn("No user or CustomerID found in localStorage");
+      return;
     }
-  };
+
+    const customerID = user.CustomerID;
+    console.log("Using CustomerID:", customerID);
+
+    const response = await fetch(`${baseUrl}/cart/${customerID}`);
+    console.log("Raw response:", response);
+
+    if (!response.ok) {
+      console.error("Failed to fetch cart, status:", response.status);
+      throw new Error("Failed to fetch cart");
+    }
+
+    const data = await response.json();
+    console.log("Cart data received:", data);
+
+    const itemsWithQuantity = Array.isArray(data)
+      ? data.map(item => ({ ...item, quantity: item.quantity || 1 }))
+      : [];
+
+    console.log("Cart items with quantity:", itemsWithQuantity);
+
+    setCartItems(itemsWithQuantity);
+
+    if (itemsWithQuantity.length === 0) {
+      console.warn("No items returned for this user.");
+    }
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+    setMessage("Failed to load cart. Check console logs.");
+    setCartItems([]);
+  }
+};
+
+
+
   
   useEffect(() => {
     fetchCart();
@@ -61,7 +94,9 @@ function Cart() {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const response = await fetch(`${baseUrl}/cart/${itemId}`, { method: 'DELETE' });
+      const user = JSON.parse(localStorage.getItem("user"));
+      const response = await fetch(`${baseUrl}/cart/${user.CustomerID}/${itemId}`, { method: 'DELETE' });
+
       if (!response.ok) throw new Error("Failed to remove item from cart.");
       setCartItems(currentItems => currentItems.filter(item => item._id !== itemId));
       setMessage("Item removed from cart successfully.");
@@ -116,7 +151,7 @@ function Cart() {
         {cartItems.length === 0 ? (
           <div className="no-items-in-cart">
             <p>No items in cart.</p>
-            <Link to="/parts" className="continue-shopping-button">
+            <Link to="/brand" className="continue-shopping-button">
               Continue Shopping
             </Link>
           </div>

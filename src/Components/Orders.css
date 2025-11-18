@@ -1,8 +1,7 @@
-/* Add these global styles to the top of your file */
-html, body {
+ body {
   margin: 0;
   padding: 0;
-     background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
+  background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
 
 }
 

@@ -1,19 +1,40 @@
-import { useState } from 'react'; // Added this import
-import { Link } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { User, ShoppingCart, LogOut } from 'lucide-react';
 
-// The NavBar component now accepts isLoggedIn and onLogout props
-function NavBar({ isLoggedIn, onLogout }) {
+function NavBar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user info exists in localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogout = () => {
-    onLogout();
-    setIsDropdownOpen(false); // Close the dropdown on logout
+    localStorage.removeItem("user"); // Clear user data
+    setIsLoggedIn(false);
+    setIsDropdownOpen(false);
+    navigate("/signUp"); // Redirect to signup after logout
+  };
+
+  const handleUserClick = () => {
+    if (!isLoggedIn) {
+      navigate("/signUp"); // If not logged in, go to sign up
+    } else {
+      toggleDropdown();
+    }
   };
 
   return (
@@ -23,41 +44,29 @@ function NavBar({ isLoggedIn, onLogout }) {
       </h3>
 
       <ul className="nav-links-main">
-        <li>
-          <Link to="/" className="nav-link-btn home-btn">Home</Link>
-        </li>
-        <li>
-          <Link to="/brand" className="nav-link-btn products-btn">Products</Link>
-        </li>
-        <li>
-          <Link to="/aboutUs" className="nav-link-btn aboutus-btn">About Us</Link>
-        </li>
+        <li><Link to="/" className="nav-link-btn home-btn">Home</Link></li>
+        <li><Link to="/brand" className="nav-link-btn products-btn">Products</Link></li>
+        <li><Link to="/aboutUs" className="nav-link-btn aboutus-btn">About Us</Link></li>
       </ul>
 
       <div className="nav-links-side">
-        <Link to="/cart" className="side-link"><ShoppingCartIcon /></Link>
-        
-        {/* Conditional rendering for the "Sign Up" link */}
-        {isLoggedIn ? (
-          <div className="dropdown-container">
-            <div className="side-link" onClick={toggleDropdown}>
-              My Account
-            </div>
-            {isDropdownOpen && (
-              <div className="dropdown-menu">
-                <Link to="/profile" className="dropdown-item" onClick={toggleDropdown}>Profile</Link>
-                <Link to="/orders" className="dropdown-item" onClick={toggleDropdown}>Orders</Link>
-                <button onClick={handleLogout} className="dropdown-item logout-btn">
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <Link to="/signUp" className="side-link">Sign Up</Link>
-        )}
-      </div>
+        <Link to="/cart" className="side-link"><ShoppingCart /></Link>
 
+        {/* User icon + dropdown */}
+        <div className="dropdown-container">
+          <div className="side-link user-icon-trigger" onClick={handleUserClick}>
+            <User />
+          </div>
+
+          {isLoggedIn && isDropdownOpen && (
+            <div className="dropdown-menu">
+              <Link to="/profile" className="dropdown-item" onClick={toggleDropdown}>Profile</Link>
+              <Link to="/orders" className="dropdown-item" onClick={toggleDropdown}>Orders</Link>
+              <button onClick={handleLogout} className="dropdown-item logout-btn">Log Out<span className='log-out-icon'><LogOut /></span></button>
+            </div>
+          )}
+        </div>
+      </div>
     </nav>
   );
 }

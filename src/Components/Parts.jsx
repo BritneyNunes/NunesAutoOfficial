@@ -49,28 +49,34 @@ function Parts() {
       });
   }, [selectedBrand]); // Re-fetch if selectedBrand changes
 
+  const storedUser = JSON.parse(localStorage.getItem("user"));
   const handleAddToCart = (part) => {
     fetch(`${baseUrl}/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(part),
+      body: JSON.stringify({
+        CustomerID: storedUser.CustomerID,
+        item: part,
+      }),
+      
     })
-      .then(res => {
-        if (!res.ok) {
-          // console.log(`Response in json ${res.error.json()}`)
-          throw new Error("Item already in cart");
-        }
-        return res.json();
-      })
-      .then(data => {
-        console.log("Item added to cart:", data);
-        alert(`${part.Name} has been added to your cart!`);
-      })
-      .catch(err => {
-        console.error("Error adding to cart:", err);
-        alert(err);
+    .then(res => {
+      if (!res.ok) {
+        return res.json().then(err => { throw new Error(err.error || "Failed to add item"); });
+      }
+      return res.json();
+    })
+    
+    .then(data => {
+      console.log("Item added to cart:", data);
+      alert(`${part.Name} has been added to your cart!`);
+    })
+    .catch(err => {
+      console.log(storedUser, "storedUser")
+      // console.error("Error adding to cart:", err);
+      alert(err);
       });
       
   };
@@ -81,8 +87,8 @@ function Parts() {
 
   return (
     <>
-      <div className='parts'>
         <NavBar />
+      <div className='parts'>
         <Link to="/brand">
           <button className="back-button"><KeyboardBackspaceIcon /></button>
         </Link>
@@ -93,7 +99,7 @@ function Parts() {
               <div className='products' key={part._id}>
                 <Link to={`/part/${part._id}`} className="product-link">
                   {/* Product Image */}
-                  <img className='prodImage' src={part.Image || '/default-image.jpg'} alt={part.Name} />
+                  <img className='prodImage' src={part.Image || 'picture of product'} alt={part.Name} />
                 </Link>
                 <div className='product-details'>
                   <p className='prodName'>{part.Name}</p>

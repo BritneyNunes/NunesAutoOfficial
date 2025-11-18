@@ -71,7 +71,7 @@
 }
 
 .side-link {
-    color: #e33434;
+    color: #e33434 !important;
     font-weight: bold;
     text-decoration: none;
     transition: color 0.2s ease;
@@ -79,4 +79,83 @@
 
 .side-link:hover {
     color: #333;
+}
+
+/* --- Dropdown Container Setup --- */
+.dropdown-container {
+    /* Critical for positioning the menu relative to this container */
+    position: relative; 
+    display: inline-block;
+    cursor: pointer; /* Indicates it's clickable */
+    padding: 0 10px; /* Optional: adds a little padding around "My Account" */
+}
+
+/* Style for the trigger element ("My Account" text or User icon) */
+.dropdown-container .side-link {
+    /* Inherit any existing 'side-link' styles, if applicable */
+    display: flex;
+    align-items: center;
+    color: var(--nav-text-color, #333); /* Use your existing color variable */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+/* --- Dropdown Menu Style --- */
+.dropdown-menu {
+    /* Position the menu absolutely */
+    position: absolute;
+    top: 100%; /* Place it right below the "My Account" link */
+    right: 0; /* Align the right edge of the menu with the right edge of the container */
+    
+    background-color: #103666; /* White background */
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    border-radius: 4px;
+    z-index: 1000; /* Ensure it floats above other content */
+    margin-top: 5px; /* Small gap between link and dropdown */
+    
+    /* Optional: Fade-in animation */
+    opacity: 0;
+    animation: fadeIn 0.15s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Individual Item Styling --- */
+.dropdown-item {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: white;
+    display: block; /* Make links take up the full width */
+    white-space: nowrap; /* Prevent items from wrapping */
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1; /* Subtle hover effect */
+    color: var(--primary-color, #007bff); /* Highlight on hover */
+}
+
+/* Styling the Logout Button */
+.logout-btn {
+    /* Optional: Add a distinct style for logout */
+    color: #dc3545; /* Red color for a warning/action button */
+}
+
+.logout-btn:hover{
+    color: white;
+    background-color: red;
+    /* height: 20px; */
+}
+
+.log-out-icon {
+    margin-left: 60px;
 }
