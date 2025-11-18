@@ -9,5 +9,5 @@ export function getBaseUrl() {
   console.log(`Using IP address: ${ip}`);
 
   // Return the base URL with the IP and port 3000
-  return `http://${ip}:3000`;
+  return `http://98.91.62.10:3000`;
 }
