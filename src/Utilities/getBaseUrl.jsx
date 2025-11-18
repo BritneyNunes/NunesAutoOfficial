@@ -3,7 +3,7 @@ export function getBaseUrl() {
   const url = new URL(window.location.href);
 
   // Extract the 'ip' query parameter from the URL, default to '44.209.222.79' if not present
-  const ip = url.searchParams.get("ip") || 'localhost';
+  const ip = url.searchParams.get("ip") || '44.209.222.79';
 
   // Log the IP address for debugging purposes
   console.log(`Using IP address: ${ip}`);
