@@ -1,33 +1,33 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.brands{
-   height: 100vh;
-   /* background-color: greenyellow; */
-   background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
+.brands {
+    height: 100vh;
+    /* background-color: greenyellow; */
+    background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb);
 }
 
-.brandsHeading{
+.brandsHeading {
     font-size: 50px;
     color: rgb(233, 226, 226);
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-align: center;
 }
 
-.partsBtn{
+.partsBtn {
     height: 5vh;
     width: 8vw;
 }
 
-.partsBtn a{
+.partsBtn a {
     text-decoration: none;
     color: black;
 }
 
-.allImages{
+.allImages {
     margin-top: 5vh;
     /* border: 5px solid black; */
     height: 55vh;
@@ -38,18 +38,56 @@
     gap: 2vw;
 }
 
-.images{
-    border: 2px solid grey;
-    border-radius: 12px;
-    display: flex;
+.images {
+    position: relative;
+    overflow: hidden;
+    
 }
 
-button{
+.images:hover{
+    cursor: pointer;
+}
+
+.images::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 2px;
+    background: linear-gradient(45deg, #4f46e5, #9333ea, #0ea5e9);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    animation: borderGlow 6s linear infinite;
+}
+
+@keyframes borderGlow {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+button {
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
-.image{
+
+.image {
     width: 26vw;
     height: 50vh;
+}
+
+.brand-links {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 99;
 }

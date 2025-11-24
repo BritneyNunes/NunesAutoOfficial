@@ -115,29 +115,43 @@ function Cart() {
 
   const total = subtotal + (selectedDelivery?.price || 0);
 
-  const handleProceedToCheckout = async (e) => {
-    const orderData = {
-      products: cartItems,
-      deliveryOption: selectedDelivery,
-      subtotal,
-      total,
-      datePlaced: new Date().toISOString(),
-    };
+  const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    try {
-      const response = await fetch(`${baseUrl}/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
-      });
-      if (!response.ok) throw new Error("Failed to post order data.");
-      setMessage("Order data posted successfully! Redirecting...");
-    } catch (error) {
-      e.preventDefault();
-      console.error("Error posting order data:", error);
-      setMessage("Failed to proceed to checkout. Please try again.");
-    }
+const handleProceedToCheckout = async (e) => {
+  if (!storedUser || !storedUser.CustomerID) {
+    console.error("No user or CustomerID found in localStorage");
+    return;
+  }
+
+  const orderData = {
+    products: cartItems,
+    CustomerID: Number(storedUser.CustomerID),   // <-- important
+    deliveryOption: selectedDelivery,
+    subtotal,
+    total,
+    datePlaced: new Date().toISOString(),
   };
+
+  localStorage.setItem("orderData", JSON.stringify(orderData));
+
+  try {
+    const response = await fetch(`${baseUrl}/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderData),
+    });
+
+    if (!response.ok) throw new Error("Failed to post order data.");
+    setMessage("Order data posted successfully! Redirecting...");
+
+  } catch (error) {
+    e.preventDefault();
+    console.error("Error posting order data:", error);
+    setMessage("Failed to proceed to checkout. Please try again.");
+  }
+};
+
+
 
   return (
     <div className="cart">

@@ -5,13 +5,12 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import './Checkout.css';
 import { getBaseUrl } from "../Utilities/getBaseUrl";
 
-const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
-console.log(`Base URL used for fetching brands: ${baseUrl}`);
-
+const baseUrl = getBaseUrl();
 
 function Checkout() {
     const [cartItems, setCartItems] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
+    const [delivery, setDelivery] = useState(0);
     const [taxes, setTaxes] = useState(0);
     const [total, setTotal] = useState(0);
     const [cardDetails, setCardDetails] = useState({
@@ -23,105 +22,100 @@ function Checkout() {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
-    // Fetch cart items from the server (simulated)
-    useEffect(() => {
-        const fetchCart = async () => {
-            try {
-                // Simulate fetching cart data from a real API
-                const response = await fetch(`${baseUrl}/cart`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch cart");
-                }
-                const data = await response.json();
-                setCartItems(data);
-            } catch (error) {
-                console.error("Error fetching cart:", error);
-                setMessage("Could not load cart. Please try again.");
-            }
-        };
-        fetchCart();
-    }, []);
+    // ➤ Fetch Cart Items
+    const fetchCart = async () => {
+    try {
+        const user = JSON.parse(localStorage.getItem("user"));
 
-    // Calculate subtotal, taxes, and total whenever cartItems change
-    useEffect(() => {
-        const calculatedSubtotal = cartItems.reduce((acc, item) => {
-            const price = Number(item.Price.replace(/[^0-9.-]+/g, "")) || 0;
-            return acc + price;
-        }, 0);
-        setSubtotal(calculatedSubtotal);
-        setTaxes(0); // Assuming taxes are free as per the design
-        setTotal(calculatedSubtotal + taxes);
-    }, [cartItems, taxes]);
-
-    // Handle form field changes with specific formatting and validation
-    const handleCardDetailsChange = (e) => {
-        const { name, value } = e.target;
-        let formattedValue = value;
-
-        if (name === 'cardNumber') {
-            // Remove all non-digit characters
-            formattedValue = formattedValue.replace(/\D/g, '');
-            // Add a space every 4 digits
-            formattedValue = formattedValue.replace(/(.{4})/g, '$1 ').trim();
-            // Limit to 19 characters (16 digits + 3 spaces)
-            if (formattedValue.length > 19) {
-                formattedValue = formattedValue.substring(0, 19);
-            }
-        } else if (name === 'expiry') {
-            // Remove all non-digit characters
-            formattedValue = formattedValue.replace(/\D/g, '');
-            // Add a slash after 2 digits
-            if (formattedValue.length > 2) {
-                formattedValue = formattedValue.substring(0, 2) + '/' + formattedValue.substring(2, 4);
-            }
-            // Limit to 5 characters (MM/YY)
-            if (formattedValue.length > 5) {
-                formattedValue = formattedValue.substring(0, 5);
-            }
-        } else if (name === 'cvc') {
-            // Remove all non-digit characters
-            formattedValue = formattedValue.replace(/\D/g, '');
-            // Limit to 3 or 4 digits (common CVC length)
-            if (formattedValue.length > 4) {
-                formattedValue = formattedValue.substring(0, 4);
-            }
+        if (!user || !user.CustomerID) {
+            console.error("No user in localStorage.");
+            setMessage("User not logged in.");
+            return;
         }
 
-        setCardDetails(prevDetails => ({
-            ...prevDetails,
-            [name]: formattedValue
-        }));
+        const response = await fetch(`${baseUrl}/cart/${user.CustomerID}`);
+
+        console.log("Fetching cart for:", user.CustomerID);
+        console.log("Cart fetch response:", response.status);
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch cart");
+        }
+
+        const data = await response.json();
+        console.log("Cart items received:", data);
+
+        setCartItems(data);
+
+    } catch (error) {
+        console.error("Error fetching cart:", error);
+        setMessage("Could not load cart. Please try again.");
+    }
+};
+
+
+    // ➤ Calculate totals
+    useEffect(() => {
+     const storedOrder = JSON.parse(localStorage.getItem("orderData"));
+       if (storedOrder) {
+      setCartItems(storedOrder.products || []);
+      setSubtotal(storedOrder.subtotal || 0);
+      setDelivery(storedOrder.deliveryOption.price || 0);
+      setTotal(storedOrder.total || 0);
+    } else {
+      // fallback: fetch from API if needed
+      fetchCart();
+    }
+    }, []);
+
+    // ➤ Handle input changes
+    const handleCardDetailsChange = (e) => {
+        const { name, value } = e.target;
+        let formatted = value;
+
+        if (name === 'cardNumber') {
+            formatted = formatted.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+            if (formatted.length > 19) formatted = formatted.substring(0, 19);
+        }
+
+        if (name === 'expiry') {
+            formatted = formatted.replace(/\D/g, '');
+            if (formatted.length > 2) formatted = formatted.substring(0, 2) + '/' + formatted.substring(2, 4);
+            if (formatted.length > 5) formatted = formatted.substring(0, 5);
+        }
+
+        if (name === 'cvc') {
+            formatted = formatted.replace(/\D/g, '');
+            if (formatted.length > 4) formatted = formatted.substring(0, 4);
+        }
+
+        setCardDetails(prev => ({ ...prev, [name]: formatted }));
     };
 
-    // Handle form submission
+    // ➤ Handle Submit
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setMessage('');
 
-        // Simulate payment processing
         try {
             const response = await new Promise(resolve => setTimeout(() => {
-                // Simulate success or failure
-                const isSuccess = Math.random() > 0.2; // 80% chance of success
-                if (isSuccess) {
-                    resolve({ status: 200, message: "Order placed successfully!" });
-                } else {
-                    resolve({ status: 400, message: "Payment failed. Please try again." });
-                }
+                const isSuccess = Math.random() > 0.2;
+                resolve({
+                    status: isSuccess ? 200 : 400,
+                    message: isSuccess ? "Order placed successfully!" : "Payment failed. Please try again."
+                });
             }, 2000));
 
             if (response.status === 200) {
-                setMessage(response.message);
-                // In a real app, you would call an API to clear the cart
                 await fetch(`${baseUrl}/clear-cart`, { method: 'POST' });
-                // Redirect to a success page
-                navigate('/orders');
+                navigate('/delivery');  // ➤ NEW FLOW: Go to delivery page after payment
             } else {
                 setMessage(response.message);
             }
+
         } catch (error) {
-            console.error("Payment error:", error);
+            console.error(error);
             setMessage("An error occurred. Please try again.");
         } finally {
             setIsLoading(false);
@@ -131,18 +125,23 @@ function Checkout() {
     return (
         <Container className="checkout-container">
             <Paper className="checkout-content" elevation={3}>
+
                 <Link to="/cart" className="back-button">
                     <KeyboardBackspaceIcon />
                 </Link>
-                <Typography variant="h4" component="h2" align="center" gutterBottom className="checkout-title">
-                    Payment
+
+                <Typography variant="h4" align="center" gutterBottom className="checkout-title">
+                    Checkout
                 </Typography>
+
+                <Divider className="summary-divider" />
 
                 <form onSubmit={handlePlaceOrder}>
                     <Box className="payment-section">
                         <Typography variant="h6" gutterBottom className="section-title">
-                            Card Details
+                            Payment Details
                         </Typography>
+
                         <TextField
                             label="Card Number"
                             name="cardNumber"
@@ -150,12 +149,10 @@ function Checkout() {
                             onChange={handleCardDetailsChange}
                             fullWidth
                             margin="normal"
-                            variant="outlined"
                             placeholder="**** **** **** ****"
-                            minLength={16} // Enforce a minimum length of 10
-                            maxLength={18} 
                             required
                         />
+
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
                                 <TextField
@@ -165,20 +162,19 @@ function Checkout() {
                                     onChange={handleCardDetailsChange}
                                     fullWidth
                                     margin="normal"
-                                    variant="outlined"
                                     placeholder="MM/YY"
                                     required
                                 />
                             </Grid>
+
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Secure Code"
+                                    label="CVC"
                                     name="cvc"
                                     value={cardDetails.cvc}
                                     onChange={handleCardDetailsChange}
                                     fullWidth
                                     margin="normal"
-                                    variant="outlined"
                                     placeholder="CVC"
                                     required
                                 />
@@ -192,14 +188,19 @@ function Checkout() {
                         <Typography variant="h6" gutterBottom className="section-title">
                             Order Summary
                         </Typography>
+
                         <Box className="summary-item">
-                            <Typography variant="body1">Subtotal:</Typography>
-                            <Typography variant="body1">R{subtotal.toLocaleString()}</Typography>
+                            <Typography>Subtotal:</Typography>
+                            <Typography>R{subtotal.toLocaleString()}</Typography>
                         </Box>
+
                         <Box className="summary-item">
-                            {/* <Typography variant="body1">Taxes:</Typography>
-                            <Typography variant="body1">R{taxes.toLocaleString()}</Typography> */}
+                            <Typography>Delivery:</Typography>
+                            <Typography>R{delivery.toLocaleString()}</Typography>
                         </Box>
+
+                        {/* <p className="delivery-display">Delivery: R{selectedDelivery.price.toLocaleString()}</p> */}
+
                         <Box className="summary-item total-row">
                             <Typography variant="h5">Total:</Typography>
                             <Typography variant="h5">R{total.toLocaleString()}</Typography>
@@ -214,12 +215,12 @@ function Checkout() {
                         className="place-order-button"
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Processing...' : 'Place Order'}
+                        {isLoading ? 'Processing...' : 'Pay & Continue'}
                     </Button>
 
                     {message && (
                         <Box className="message-box" mt={2}>
-                            <Typography variant="body2" align="center" color="error">
+                            <Typography align="center" color="error">
                                 {message}
                             </Typography>
                         </Box>
@@ -230,5 +231,4 @@ function Checkout() {
     );
 }
 
-// Export the main component
 export default Checkout;

@@ -12,6 +12,8 @@ import Parts from './Components/Parts';
 import SignUp from './Components/SignUp';
 import AboutUs from './Components/AboutUs';
 import Profile from './Components/Profile';
+import Delivery from './Components/Delivery';
+import Confirmation from './Components/Confirmation';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/location" element={<Location />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/delivery" element={<Delivery />} />
+            <Route path="/confirmation" element={<Confirmation />} />
             
             {/* Pass the login handler to your login and signup components */}
             <Route path="/login" element={<LogIn onLoginSuccess={handleLoginSuccess} />} />

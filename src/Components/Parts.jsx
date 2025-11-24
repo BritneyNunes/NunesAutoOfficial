@@ -1,7 +1,5 @@
-// 
-
 import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import Footer from './Footer';
 import './Parts.css';
@@ -15,11 +13,15 @@ import { getBaseUrl } from "../Utilities/getBaseUrl"; // Import utility for base
 function Parts() {
   const [parts, setParts] = useState([]);
   const [error, setError] = useState(""); 
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+
   const { selectedBrand } = useContext(BrandsContext); 
   parts.forEach(p => console.log(p.Name, p.Price));
 
   const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
   console.log(`Base URL used for fetching parts: ${baseUrl}`);
+  console.log()
 
   useEffect(() => {
     if (!selectedBrand) {
@@ -29,7 +31,7 @@ function Parts() {
 
     
     // Fetch parts for the selected brand
-    fetch(`${baseUrl}/parts?brandId=${selectedBrand._id}`)
+    fetch(`${baseUrl}/parts?brandId=${selectedBrand.Brand}`)
       .then(res => {
         if (!res.ok) {
           throw new Error(`Failed to fetch parts. Server responded with: ${res.status}`);
@@ -51,6 +53,16 @@ function Parts() {
 
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const handleAddToCart = (part) => {
+    console.log("User from localStorage:", storedUser);
+
+    if (!storedUser || !storedUser.CustomerID) {
+      setMessage("Please log in to view your cart.");
+      alert("Please log in to view your cart.");
+      navigate("/login")
+      // console.warn("No user or CustomerID found in localStorage");
+      return;
+    }
+
     fetch(`${baseUrl}/cart`, {
       method: "POST",
       headers: {

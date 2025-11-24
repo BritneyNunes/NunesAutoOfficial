@@ -15,24 +15,37 @@ function Order() {
 
 
   useEffect(() => {
-      const fetchOrders = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/orders`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders from the server.");
-        }
-        const data = await response.json();
-        setOrders(data);
-      } catch (err) {
-        console.error("Error fetching orders:", err);
-        setError("Could not load order history. Please try again later.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchOrders = async () => {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    fetchOrders();
-  }, []); // The empty array ensures this effect runs only once when the component mounts
+      if (!storedUser || !storedUser.CustomerID) {
+        setError("User not logged in.");
+        setIsLoading(false);
+        return;
+      }
+
+      const customerId = storedUser.CustomerID;
+
+      const response = await fetch(`${baseUrl}/orders/${customerId}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders from the server.");
+      }
+
+      const data = await response.json();
+      setOrders(data);
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+      setError("Could not load order history. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchOrders();
+}, []);
+
 
   if (isLoading) {
     return (
@@ -88,7 +101,7 @@ function Order() {
               </div>
               <div className="order-summary">
                 <p><strong>Subtotal:</strong> R{order.subtotal?.toLocaleString() || '0'}</p>
-                <p><strong>Delivery:</strong> {order.deliveryOption?.name || 'N/A'} (R{order.deliveryOption?.price?.toLocaleString() || '0'})</p>
+                <p><strong>Delivery:</strong> {order.deliveryOption?.name } (R{order.deliveryOption?.price?.toLocaleString() || '0'})</p>
                 <p><strong>Total:</strong> R{order.total?.toLocaleString() || '0'}</p>
               </div>
             </div>

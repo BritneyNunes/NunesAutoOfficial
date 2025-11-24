@@ -31,7 +31,7 @@ function Brand() {
             <SwiperSlide className='images' key={brand._id}>
               <Link
                 to='/parts'
-                
+                className='brand-links'
                 onClick={() => setSelectedBrand(brand)} // This line correctly updates the context.
               >
                 <button>

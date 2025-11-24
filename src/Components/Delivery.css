@@ -1,11 +1,14 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* --- Shared Layout Styles --- */
+
 .checkout-container {
-    /* background: linear-gradient(to bottom, #0b1a36, #1d3a6d, #5b7fb5, #c7d3eb); */
+    /* Background for the whole page (shared) */
+    background: linear-gradient(135deg, #0b1a36, #1d3a6d, #4a689e, #8aa7d9);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,35 +16,39 @@
     justify-content: center;
     padding: 20px;
     box-sizing: border-box;
-    font-family: Arial, sans-serif; 
+    font-family: 'Inter', sans-serif;
 }
 
 .checkout-content {
+    /* Card container (shared) */
     width: 100%;
     max-width: 500px;
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     position: relative;
     background-color: #fff;
 }
 
 .checkout-title {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
+    /* Title text (shared) */
+    font-weight: 700;
+    color: #0b1a36;
+    margin-bottom: 25px;
     text-align: center;
 }
 
 .section-title {
-    font-weight: bold;
-    color: #555;
-    border-bottom: 2px solid #eee;
+    /* Section headers (shared) */
+    font-weight: 600;
+    color: #1d3a6d;
+    border-bottom: 2px solid #e0e0e0;
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
 
 .back-button {
+    /* Back link style (shared) */
     position: absolute;
     top: 25px;
     left: 25px;
@@ -51,45 +58,22 @@
 }
 
 .back-button:hover {
-    color: #000;
-}
-
-.order-summary {
-    margin-top: 20px;
-}
-
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.summary-item.total-row {
-    font-weight: bold;
-    margin-top: 20px;
-}
-
-.summary-divider {
-    margin: 20px 0;
+    color: #0b1a36;
 }
 
 .place-order-button {
-    background-color: #0b1a36; /* Dark blue from your nav bar */
+    /* Primary button style (shared) */
+    background-color: #0b1a36; 
     color: #fff;
     font-size: 1.1em;
     font-weight: bold;
     padding: 15px;
     border-radius: 8px;
     margin-top: 30px;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, transform 0.1s;
 }
 
 .place-order-button:hover {
-    background-color: #1d3a6d; /* Lighter blue on hover */
-}
-
-.message-box {
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
+    background-color: #1d3a6d; 
+    transform: translateY(-1px);
 }
