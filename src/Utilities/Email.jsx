@@ -2,6 +2,7 @@ export async function sendEmail(to, subject, html) {
   try {
     const stored = localStorage.getItem("basicAuthToken")
     console.log("to, subject: ", to, subject)
+    console.log({...localStorage})
 
     if (!stored) {
       console.log("No auth token found in localStorage");
@@ -12,7 +13,7 @@ export async function sendEmail(to, subject, html) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Basic ${stored}`   // ⭐ correct format
+        "Authorization": `Basic ${stored}`   
       },
       body: JSON.stringify({ to, subject, html })
 
