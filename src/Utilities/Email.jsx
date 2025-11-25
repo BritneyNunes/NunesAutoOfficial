@@ -1,10 +1,12 @@
+import { use } from "react";
+
 export async function sendEmail(to, subject, html) {
   try {
-    const stored = localStorage.getItem("basicAuthToken")
-    console.log("to, subject: ", to, subject)
+    const userExists = localStorage.getItem("user")
+    console.log("userExists: ", userExists)
     console.log({...localStorage})
 
-    if (!stored) {
+    if (!userExists) {
       console.log("No auth token found in localStorage");
       return { success: false, message: "User not logged in" };
     }
@@ -13,7 +15,7 @@ export async function sendEmail(to, subject, html) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Basic ${stored}`   
+        "Authorization": `Basic ${userExists}`   
       },
       body: JSON.stringify({ to, subject, html })
 
