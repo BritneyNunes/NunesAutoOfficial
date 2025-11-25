@@ -3,11 +3,11 @@ body {
   font-family: "Inter", sans-serif;
   margin: 0;
   padding: 0;
-  /* color: #fff; */
 }
 
 /* Main container */
 .profile-container {
+  color: #fff;
   height: auto;
   max-width: 600px;
   margin: 80px auto;
