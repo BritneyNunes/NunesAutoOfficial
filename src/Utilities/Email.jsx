@@ -4,7 +4,7 @@ export async function sendEmail(to, subject, html) {
   try {
     const userExists = localStorage.getItem("user")
     console.log("userExists: ", userExists)
-    console.log({...localStorage})
+    console.log({ ...localStorage })
 
     if (!userExists) {
       console.log("No auth token found in localStorage");
@@ -14,11 +14,9 @@ export async function sendEmail(to, subject, html) {
     const response = await fetch("http://98.91.62.10:3000/send-email", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Basic ${userExists}`   
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({ to, subject, html })
-
     });
 
     return await response.json();
