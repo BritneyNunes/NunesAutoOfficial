@@ -14,8 +14,9 @@ const deliveryOptions = [
   { id: 'priority', name: 'Priority Delivery', description: '3-5 hours', price: 250.00 },
 ];
 
+const elasticIP = import.meta.env.IP || "http://98.91.62.10:3000" 
 const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
-console.log(`Base URL used for fetching brands: ${baseUrl}`);
+console.log(`Base URL used for fetching brands: ${elasticIP}`);
 
 function Cart() {           
   const [cartItems, setCartItems] = useState([]);
@@ -40,7 +41,7 @@ function Cart() {
     const customerID = user.CustomerID;
     console.log("Using CustomerID:", customerID);
 
-    const response = await fetch(`${baseUrl}/cart/${customerID}`);
+    const response = await fetch(`${elasticIP}/cart/${customerID}`);
     console.log("Raw response:", response);
 
     if (!response.ok) {
@@ -74,7 +75,7 @@ function Cart() {
   
   useEffect(() => {
     fetchCart();
-  }, [baseUrl]); // re-fetch if baseUrl changes
+  }, [elasticIP]); // re-fetch if baseUrl changes
 
   const handleIncreaseQuantity = (itemId) => {
     setCartItems(currentItems =>
@@ -95,7 +96,7 @@ function Cart() {
   const handleRemoveItem = async (itemId) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-      const response = await fetch(`${baseUrl}/cart/${user.CustomerID}/${itemId}`, { method: 'DELETE' });
+      const response = await fetch(`${elasticIP}/cart/${user.CustomerID}/${itemId}`, { method: 'DELETE' });
 
       if (!response.ok) throw new Error("Failed to remove item from cart.");
       setCartItems(currentItems => currentItems.filter(item => item._id !== itemId));
@@ -135,7 +136,7 @@ const handleProceedToCheckout = async (e) => {
   localStorage.setItem("orderData", JSON.stringify(orderData));
 
   try {
-    const response = await fetch(`${baseUrl}/orders`, {
+    const response = await fetch(`${elasticIP}/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData),

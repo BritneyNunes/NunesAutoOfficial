@@ -1,14 +1,26 @@
-export const sendEmail = async () => {
-  const response = await fetch("http://localhost:3000/send-email", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      to: "britneynunes@gmail.com",
-      subject: "Order Confirmation",
-      message: "Thank you for ordering with NunesAuto!",
-    }),
-  });
+export async function sendEmail(to, subject, html) {
+  try {
+    const stored = localStorage.getItem("basicAuthToken")
+    console.log("to, subject: ", to, subject)
 
-  const data = await response.json();
-  console.log(data);
-};
+    if (!stored) {
+      console.error("No auth token found in localStorage");
+      return { success: false, message: "User not logged in" };
+    }
+
+    const response = await fetch("http://98.91.62.10:3000/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Basic ${stored}`   // ⭐ correct format
+      },
+      body: JSON.stringify({ to, subject, html })
+
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.error("Email error:", error);
+    return { success: false, error: error.message };
+  }
+}

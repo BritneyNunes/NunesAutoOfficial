@@ -19,8 +19,10 @@ function Parts() {
   const { selectedBrand } = useContext(BrandsContext); 
   parts.forEach(p => console.log(p.Name, p.Price));
 
+  const elasticIP = import.meta.env.IP || "http://98.91.62.10:3000" 
+
   const baseUrl = getBaseUrl();  // Get the base URL (which includes IP from the query string or defaults)
-  console.log(`Base URL used for fetching parts: ${baseUrl}`);
+  console.log(`Base URL used for fetching parts: ${elasticIP}`);
   console.log()
 
   useEffect(() => {
@@ -31,7 +33,7 @@ function Parts() {
 
     
     // Fetch parts for the selected brand
-    fetch(`${baseUrl}/parts?brandId=${selectedBrand.Brand}`)
+    fetch(`${elasticIP}/parts?brandId=${selectedBrand.Brand}`)
       .then(res => {
         if (!res.ok) {
           throw new Error(`Failed to fetch parts. Server responded with: ${res.status}`);
@@ -63,7 +65,7 @@ function Parts() {
       return;
     }
 
-    fetch(`${baseUrl}/cart`, {
+    fetch(`${elasticIP}/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

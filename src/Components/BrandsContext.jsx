@@ -3,6 +3,7 @@ import { getBaseUrl } from "../Utilities/getBaseUrl"; // Import utility for base
 
 export const BrandsContext = createContext();
 
+const elasticIP = import.meta.env.IP || "http://98.91.62.10:3000" 
 
 export function BrandsProvider({ children }) {
   const [brands, setBrands] = useState([]); // State to hold brands
@@ -14,7 +15,7 @@ export function BrandsProvider({ children }) {
     // 1. Define the asynchronous function
     const fetchBrands = async () => {
         const baseUrl = getBaseUrl();
-        const url = `${baseUrl}/brands`;
+        const url = `${elasticIP}/brands`;
 
         // CRITICAL DEBUG: This synchronous log is the first thing that runs.
         // If you still don't see this, the BrandsProvider component is not rendering.

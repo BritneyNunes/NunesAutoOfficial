@@ -54,7 +54,7 @@
     inset: 0;
     border-radius: 24px;
     padding: 2px;
-    background: linear-gradient(45deg, #4f46e5, #9333ea, #0ea5e9);
+    background: linear-gradient(45deg, #1004f3, #f30404);
     mask:
         linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);

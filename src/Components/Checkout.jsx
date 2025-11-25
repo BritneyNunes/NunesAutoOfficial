@@ -108,7 +108,12 @@ function Checkout() {
             }, 2000));
 
             if (response.status === 200) {
-                await fetch(`${baseUrl}/clear-cart`, { method: 'POST' });
+                const user = JSON.parse(localStorage.getItem("user"));
+                await fetch(`${baseUrl}/clear-cart`, 
+                    { method: 'POST',
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(user)
+                 });
                 navigate('/delivery');  // ➤ NEW FLOW: Go to delivery page after payment
             } else {
                 setMessage(response.message);
