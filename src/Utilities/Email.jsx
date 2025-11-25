@@ -4,7 +4,7 @@ export async function sendEmail(to, subject, html) {
     console.log("to, subject: ", to, subject)
 
     if (!stored) {
-      console.error("No auth token found in localStorage");
+      console.log("No auth token found in localStorage");
       return { success: false, message: "User not logged in" };
     }
 
