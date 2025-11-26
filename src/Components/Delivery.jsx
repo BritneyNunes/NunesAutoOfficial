@@ -111,7 +111,7 @@ function Delivery() {
                                 <TextField label="Postal Code" name="postalCode" value={deliveryDetails.postalCode} onChange={handleChange} fullWidth margin="normal" required />
                             </Grid>
                         </Grid>
-
+         
                         <TextField label="Phone Number" name="phoneNumber" value={deliveryDetails.phoneNumber} onChange={handleChange} fullWidth margin="normal" required />
                     </Box>
 
@@ -122,11 +122,11 @@ function Delivery() {
                         className="place-order-button"
                         sx={{
                             backgroundColor: '#e33434',
-                            '&:hover': { backgroundColor: '#c02d2d' },
+                            '&:hover': { backgroundColor: '#c02d2d' },       
                             padding: '16px',
                             fontSize: '1.2rem',
                             fontWeight: 'bold',
-                            marginTop: '24px',
+                            marginTop: '24px', 
                             textTransform: 'none'
                         }}
                     >
@@ -135,7 +135,7 @@ function Delivery() {
                 </form>
             </Paper>
         </Container>
-    );
+    ); 
 }
 
 export default Delivery;
