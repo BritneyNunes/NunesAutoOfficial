@@ -10,7 +10,7 @@ function Delivery() {
     const [deliveryDetails, setDeliveryDetails] = useState({
         fullName: '',
         addressLine: '',
-        Email: '',
+        email: '',
         city: '',
         postalCode: '',
         phoneNumber: ''
@@ -31,47 +31,44 @@ function Delivery() {
     const handleContinueToPayment = async (e) => {
         e.preventDefault();
 
-        // Save delivery details
         sessionStorage.setItem('nunesAutoDeliveryDetails', JSON.stringify(deliveryDetails));
 
-        // Get order from localStorage
         const storedOrder = JSON.parse(localStorage.getItem("orderData"));
         if (!storedOrder || !storedOrder.products || storedOrder.products.length === 0) {
             alert("Your cart is empty. Please add items before checkout.");
             return; 
         }
 
-        // THIS IS THE CRITICAL PART — to_email overrides the "To Email" field in EmailJS
         const templateParams = {
-            
-            to_email: deliveryDetails.Email,        // This sets the real recipient
+            to_email: deliveryDetails.email,
+
             fullName: deliveryDetails.fullName,
-            Email: deliveryDetails.Email,           // Still used in email body
+            email: deliveryDetails.email,
             addressLine: deliveryDetails.addressLine,
             city: deliveryDetails.city,
             postalCode: deliveryDetails.postalCode,
             phoneNumber: deliveryDetails.phoneNumber,
 
-            // For {{#each products}} loop in template
-            products: storedOrder.products.map(product => ({
-                Name: product.Name,
-                Price: product.Price
+            // Delivery option flattened
+            deliveryName: storedOrder.deliveryOption.name,
+            deliveryPrice: storedOrder.deliveryOption.price,
+
+            // Product array formatted for EmailJS
+            products: storedOrder.products.map(p => ({
+                name: p.Name,
+                price: p.Price
             })),
 
             subtotal: storedOrder.subtotal,
-            total: storedOrder.total,
-            deliveryOption: {
-                name: storedOrder.deliveryOption.name,
-                price: storedOrder.deliveryOption.price
-            }
+            total: storedOrder.total
         };
 
         try {
             await emailjs.send(
-                "service_fru4fgk",        // Your Service ID
-                "template_jnsiogm",       // Your Template ID
+                "service_fru4fgk",
+                "template_jnsiogm",
                 templateParams,
-                "NtcoRuX6i6c0q2X2R"        // Your Public Key (User ID)
+                "NtcoRuX6i6c0q2X2R"
             );
 
             console.log("Order confirmation email sent successfully!");
@@ -79,7 +76,7 @@ function Delivery() {
         } catch (error) {
             console.error("EmailJS failed:", error);
             alert("Order placed! Confirmation email failed to send — we'll contact you shortly.");
-            navigate('/confirmation'); // Still go to confirmation
+            navigate('/confirmation');
         }
     };
 
@@ -90,7 +87,7 @@ function Delivery() {
                     <KeyboardBackspaceIcon />
                 </Link>
 
-                <Typography variant="h4" component="h2" align="center" gutterBottom className="checkout-title">
+                <Typography variant="h4" align="center" gutterBottom className="checkout-title">
                     Delivery Details
                 </Typography>
 
@@ -101,7 +98,7 @@ function Delivery() {
                         </Typography>
 
                         <TextField label="Full Name" name="fullName" value={deliveryDetails.fullName} onChange={handleChange} fullWidth margin="normal" required />
-                        <TextField label="Email" name="Email" type="email" value={deliveryDetails.Email} onChange={handleChange} fullWidth margin="normal" required />
+                        <TextField label="Email" name="email" type="email" value={deliveryDetails.email} onChange={handleChange} fullWidth margin="normal" required />
                         <TextField label="Address Line" name="addressLine" value={deliveryDetails.addressLine} onChange={handleChange} fullWidth margin="normal" required />
 
                         <Grid container spacing={2}>
