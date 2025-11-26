@@ -38,11 +38,12 @@ function Delivery() {
         const storedOrder = JSON.parse(localStorage.getItem("orderData"));
         if (!storedOrder || !storedOrder.products || storedOrder.products.length === 0) {
             alert("Your cart is empty. Please add items before checkout.");
-            return;
+            return; 
         }
 
         // THIS IS THE CRITICAL PART — to_email overrides the "To Email" field in EmailJS
         const templateParams = {
+            
             to_email: deliveryDetails.Email,        // This sets the real recipient
             fullName: deliveryDetails.fullName,
             Email: deliveryDetails.Email,           // Still used in email body
