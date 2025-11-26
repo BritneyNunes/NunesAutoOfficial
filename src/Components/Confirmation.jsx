@@ -16,9 +16,7 @@ function Confirmation() {
           Your order has been received and is being prepared with care.
         </p>
 
-        {/* <p className="thankyou-blessing">
-          You will receive a confirmation email <span className="email"> {user.Email}</span>
-        </p> */}
+        
 
         <div className="no-items-in-cart">
             <Link to="/brand" className="continue-shopping-button">

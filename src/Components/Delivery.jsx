@@ -178,15 +178,7 @@ function Delivery() {
                         variant="contained"
                         fullWidth
                         className="place-order-button"
-                        sx={{
-                            backgroundColor: '#e33434',
-                            '&:hover': { backgroundColor: '#c02d2d' },
-                            padding: '16px',
-                            fontSize: '1.2rem',
-                            fontWeight: 'bold',
-                            marginTop: '24px',
-                            textTransform: 'none'
-                        }}
+                        
                     >
                         Continue to Payment
                     </Button>
