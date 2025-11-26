@@ -1,27 +1,37 @@
-import { use } from "react";
+import emailjs from "@emailjs/browser";
+import { useRef } from "react";
 
-export async function sendEmail(to, subject, html) {
-  try {
-    const userExists = localStorage.getItem("user")
-    console.log("userExists: ", userExists)
-    console.log({ ...localStorage })
+function ContactForm() {
+  const form = useRef();
 
-    if (!userExists) {
-      console.log("No auth token found in localStorage");
-      return { success: false, message: "User not logged in" };
-    }
+  const sendEmail = (e) => {
+    e.preventDefault();
 
-    const response = await fetch("http://98.91.62.10:3000/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ to, subject, html })
-    });
+    emailjs
+      .sendForm(
+        "service_hg9kvvj",
+        "template_jnsiogm",
+        form.current,
+        "NtcoRuX6i6c0q2X2R"
+      )
+      .then(
+        (result) => {
+          console.log("Email sent:", result.text);
+        },
+        (error) => {
+          console.log("Error:", error.text);
+        }
+      );
+  };
 
-    return await response.json();
-  } catch (error) {
-    console.error("Email error:", error);
-    return { success: false, error: error.message };
-  }
+  return (
+    <form ref={form} onSubmit={sendEmail}>
+      <input type="text" name="user_name" placeholder="Your name" />
+      <input type="email" name="user_email" placeholder="Your email" />
+      <textarea name="message" placeholder="Message"></textarea>
+      <button type="submit">Send</button>
+    </form>
+  );
 }
+
+export default ContactForm;
